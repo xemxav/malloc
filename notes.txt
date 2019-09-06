@@ -1,0 +1,37 @@
+Il faut garder en 'memoire' la liste des zones libres ?
+Creer un processus fils qui va garder en memoire un liste chainé avec les adresses libres et la taille de la zone dans une liste chainée ?
+
+Organiser les allocations dans une page en fonction de leur taille ? genre par block qui de taille n tel que page/n = nb de block
+
+Une Variable global pour enregistrer les pages ?
+
+Qu'est ce qu'une librairie dynamique, un .so ?
+on peut verifier les fonctions contenues dans un .so avec nm
+
+il faut set le path de la libraire avec des variables d'environnement pour charger la lib
+	setenv DYLD_LIBRARY_PATH . ->permet de lui dire ou trouver les librairie
+	setenv DYLD_INSERT_LIBRARIES nom_de_la_lib.so ->permet de lui dire quelle lib a injecter
+
+	ensuite il faut demander au loader de fonctionner differement, il faut
+		setenv DYLD_FORCE_FLAT_NAMESPACE 1
+
+Regarder video Malloc
+
+regle de makefile
+	compilé en librairie partagé gcc -shared -o $(NAME).so
+
+utilisation de mmap:
+
+void *mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset);
+
+	*addr = il faut mettre 0 si il n'existe pas, quid d'un pointeur null ?
+	len : combien de byte
+
+	prot : il faut chosir les prots pour donner les autorisations
+
+	flag : on prend MAP_ANON car on ne veut pas mapper de fichier
+			on prend MAP_PRIVATE car en cas d'un fork pour dubliquer la zone memoire
+	fd : -1 car on a pas de fichier
+	offset : 0, caar pas de offset
+
+
