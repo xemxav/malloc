@@ -3,16 +3,16 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
-NAME = libft_malloc_$HOSTTYPE.so
+NAME = malloc_test
 PATH_OBJ = ./obj/
 PATH_SRC = ./src/
 PATH_INC = ./includes/
 
 #******************************************************************************#
-#                              MALLOC LIBRARY                                  #
+#                              MALLOC TEST                                  #
 #******************************************************************************#
 
-FILES = main
+FILES = main malloc zoning
 OBJ = $(addprefix $(PATH_OBJ), $(addsuffix .o , $(FILES)))
 SRC = $(addprefix $(PATH_SRC), $(addsuffix .c , $(FILES)))
 
