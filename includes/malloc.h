@@ -19,7 +19,6 @@
 
 typedef struct		s_alloc
 {
-
 	size_t 			size;			// taille du malloc
 	struct s_alloc	*next;			// adresse de la suivante
 }					t_alloc; 		// adresse du debut d'un malloc
@@ -42,18 +41,15 @@ extern t_zone		*g_zone;
 */
 
 void    			*ft_malloc(size_t size);
-void				*get_tiny(size_t size);
-//void				*get_small(size_t size);
-//void				*get_large(size_t size);
 
 
 /*
  *  ZONING.C
 */
 
-int					init_zoning(int page_nb);
+t_zone				*create_zone(int zone_size);
 t_alloc				*make_new_alloc(size_t size, t_zone *current_zone);
-t_zone				*get_current_zone(int type_size, int req_size);
+t_zone				*get_current_zone(int zone_size, int req_size);
 
 
 /*
@@ -61,7 +57,7 @@ t_zone				*get_current_zone(int type_size, int req_size);
 */
 
 void 				show_alloc_mem();
-void				print_adress(unsigned long adrr);
+void				print_adress(void *adrr);
 
 //void    			ft_free(void *ptr);
 //void    			*ft_realloc(void *ptr, size_t size);

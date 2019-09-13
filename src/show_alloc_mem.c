@@ -20,29 +20,30 @@ static size_t	basecount(unsigned long long int n, int base)
 }
 
 
-void	print_adress(unsigned long adrr)
+void			print_adress(void *adrr)
 {
-	char	*ref;
-	size_t	len_adrr;
+	char		*ref;
+	size_t		len_adrr;
+	char		str[20];
+	unsigned long ul_ad;
 
-	char	str[20];
-
+	ul_ad = (unsigned long)adrr;
 	ref = "0123456789abcdef\0";
-	len_adrr = basecount(adrr, 16) - 1;
+	len_adrr = basecount(ul_ad, 16) - 1;
 	ft_putstr("0x");
 	str[len_adrr + 1] = '\0';
 	while ((int)len_adrr >= 0) //il faut partir de la fin
 	{
-		str[(int)len_adrr] = ref[adrr % 16];
-		adrr = adrr / 16;
+		str[(int)len_adrr] = ref[ul_ad % 16];
+		ul_ad = ul_ad / 16;
 		len_adrr--;
 	}
 	ft_putstr(str);
 }
 
-static void print_allocs(t_zone *zone)
+static void 	print_allocs(t_zone *zone)
 {
-	t_alloc	*tmp;
+	t_alloc		*tmp;
 
 	tmp = NULL;
 	if (zone->allocs == NULL)
@@ -50,9 +51,9 @@ static void print_allocs(t_zone *zone)
 	tmp = (t_alloc*)zone->allocs;
 	while (tmp != NULL)
 	{
-		print_adress((unsigned long)tmp);
+		print_adress((void*)tmp + 1);
 		ft_putstr(" - ");
-		print_adress((unsigned long)tmp + tmp->size);
+		print_adress(((void*)tmp) + tmp->size);
 		ft_putstr(" : ");
 		ft_putnbr(tmp->size);
 		ft_putstr(" octets\n");
@@ -60,21 +61,25 @@ static void print_allocs(t_zone *zone)
 	}
 }
 
-static void	show_type(int type_size, char *type)
+static void		show_type(int type_size, char *type)
 {
-	t_zone	*tmp;
+	t_zone		*tmp;
 
 	tmp = g_zone;
 	while(tmp != NULL)
 	{
 		if (tmp->type_size == type_size)
 		{
+			// todo: enlever les print de tests
 			ft_putstr(type);
+			ft_putchar(' ');
+			ft_putnbr(tmp->allocated);
+			ft_putchar(' ');
+			ft_putnbr(sizeof(t_zone) + 2 * sizeof(t_alloc));
 			ft_putstr(" : ");
-			print_adress((unsigned long)(void*)tmp);
+			print_adress((void*)tmp);
 			ft_putchar('\n');
 			print_allocs(tmp);
-			ft_putchar('\n');
 		}
 		tmp = tmp->next;
 	}
