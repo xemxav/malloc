@@ -32,7 +32,7 @@ void			print_adress(void *adrr)
 	len_adrr = basecount(ul_ad, 16) - 1;
 	ft_putstr("0x");
 	str[len_adrr + 1] = '\0';
-	while ((int)len_adrr >= 0) //il faut partir de la fin
+	while ((int)len_adrr >= 0)
 	{
 		str[(int)len_adrr] = ref[ul_ad % 16];
 		ul_ad = ul_ad / 16;
@@ -48,12 +48,12 @@ static void 	print_allocs(t_zone *zone)
 	tmp = NULL;
 	if (zone->allocs == NULL)
 		return;
-	tmp = (t_alloc*)zone->allocs;
+	tmp = zone->allocs;
 	while (tmp != NULL)
 	{
-		print_adress((void*)tmp + 1);
+		print_adress((void*)(tmp) + sizeof(t_alloc) + 1);
 		ft_putstr(" - ");
-		print_adress(((void*)tmp) + tmp->size);
+		print_adress((void*)(tmp) + sizeof(t_alloc) + 1 + tmp->size);
 		ft_putstr(" : ");
 		ft_putnbr(tmp->size);
 		ft_putstr(" octets\n");
@@ -85,6 +85,21 @@ static void		show_type(int type_size, char *type)
 	}
 
 }
+
+//void	show_alloc_mem_ex(void *zone, size_t size)
+//{
+//	size_t			i;
+//	unsigned char	*tmp;
+//
+//	i = 0;
+//	tmp = (unsigned char *)adr;
+//	while (i < size)
+//	{
+//
+//		write(1, &(tmp[i]),1)
+//	}
+//
+//}
 
 void 	show_alloc_mem()
 {

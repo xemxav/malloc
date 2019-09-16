@@ -7,15 +7,17 @@
 
 static void		*get_ptr(size_t size, int zone_size)
 {
-	void 		*new_ptr;
 	t_alloc		*new_alloc;
 	t_zone		*current_zone;
+	void		*new_ptr;
 
 	current_zone = get_current_zone(zone_size, size);
 	if (current_zone == NULL)
 		return (NULL);
 	new_alloc = make_new_alloc(size, current_zone);
-	new_ptr = (void*)new_alloc + 1;
+	printf("new_alloc = %p\nsizeof new_alloc = %lu\n", new_alloc, sizeof(t_alloc));
+	new_ptr = (void*)(new_alloc) + sizeof(t_alloc) + 1;
+	printf("new_ptr = %p\n", new_ptr);
 	return (new_ptr);
 }
 
