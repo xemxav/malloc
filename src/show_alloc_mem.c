@@ -1,12 +1,21 @@
-//
-// Created by Xavier-emmanuel Moreau on 2019-09-12.
-//
+/* ************************************************************************** */
+/*                                                          LE - /            */
+/*                                                              /             */
+/*   show_alloc_mem.c                                 .::    .:/ .      .::   */
+/*                                                 +:+:+   +:    +:  +:+:+    */
+/*   By: xmoreau <xmoreau@student.le-101.fr>        +:+   +:    +:    +:+     */
+/*                                                 #+#   #+    #+    #+#      */
+/*   Created: 2019/09/17 13:49:19 by xmoreau      #+#   ##    ##    #+#       */
+/*   Updated: 2019/09/17 13:49:19 by xmoreau     ###    #+. /#+    ###.fr     */
+/*                                                         /                  */
+/*                                                        /                   */
+/* ************************************************************************** */
 
 #include "../includes/malloc.h"
 
-static size_t	basecount(unsigned long long int n, int base)
+static size_t		basecount(unsigned long long int n, int base)
 {
-	size_t		count;
+	size_t			count;
 
 	count = 0;
 	if (n == 0)
@@ -19,13 +28,12 @@ static size_t	basecount(unsigned long long int n, int base)
 	return (count);
 }
 
-
-void			print_adress(void *adrr)
+void				print_adress(void *adrr)
 {
-	char		*ref;
-	size_t		len_adrr;
-	char		str[20];
-	unsigned long ul_ad;
+	char			*ref;
+	size_t			len_adrr;
+	char			str[20];
+	unsigned long	ul_ad;
 
 	ul_ad = (unsigned long)adrr;
 	ref = "0123456789abcdef\0";
@@ -41,13 +49,13 @@ void			print_adress(void *adrr)
 	ft_putstr(str);
 }
 
-static void 	print_allocs(t_zone *zone)
+static void			print_allocs(t_zone *zone)
 {
-	t_alloc		*tmp;
+	t_alloc			*tmp;
 
 	tmp = NULL;
 	if (zone->allocs == NULL)
-		return;
+		return ;
 	tmp = zone->allocs;
 	while (tmp != NULL)
 	{
@@ -61,12 +69,12 @@ static void 	print_allocs(t_zone *zone)
 	}
 }
 
-static void		show_type(int type_size, char *type)
+static void			show_type(int type_size, char *type)
 {
-	t_zone		*tmp;
+	t_zone			*tmp;
 
 	tmp = g_zone;
-	while(tmp != NULL)
+	while (tmp != NULL)
 	{
 		if (tmp->type_size == type_size)
 		{
@@ -83,58 +91,10 @@ static void		show_type(int type_size, char *type)
 		}
 		tmp = tmp->next;
 	}
-
 }
 
-static void		print_hexa(unsigned char tmp)
+void				show_alloc_mem()
 {
-	char		*ref;
-	char		str[3];
-	int			i;
-
-	i = 1;
-	ref = "0123456789abcdef\0";
-	str[2] = '\0';
-	while (i >= 0)
-	{
-		str[i] = ref[tmp % 16];
-		tmp /= 16;
-		i--;
-	}
-	ft_putstr(str);
-}
-
-
-void	show_alloc_mem_ex(void *zone, size_t size)
-{
-	size_t			i;
-	int				y;
-	unsigned char	*tmp;
-
-	i = 0;
-	tmp = (unsigned char *)zone;
-	while (i < size)
-	{
-		y = 0;
-		print_adress(zone);
-		ft_putchar(' ');
-		while (y < 16)
-		{
-			print_hexa(tmp[i]);
-			i++;
-			y++;
-			zone++;
-			if (y < 16)
-				ft_putchar(' ');
-		}
-		ft_putchar('\n');
-	}
-
-}
-
-void 	show_alloc_mem()
-{
-
 	show_type(TINY, "TINY");
 //	show_type(SMALL, "SMALL");
 //	show_type(LARGE, "LARGE");

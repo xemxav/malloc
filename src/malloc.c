@@ -1,9 +1,17 @@
-//
-// Created by Xavier-emmanuel Moreau on 2019-09-10.
-//
+/* ************************************************************************** */
+/*                                                          LE - /            */
+/*                                                              /             */
+/*   malloc.c                                         .::    .:/ .      .::   */
+/*                                                 +:+:+   +:    +:  +:+:+    */
+/*   By: xmoreau <xmoreau@student.le-101.fr>        +:+   +:    +:    +:+     */
+/*                                                 #+#   #+    #+    #+#      */
+/*   Created: 2019/09/17 13:45:41 by xmoreau      #+#   ##    ##    #+#       */
+/*   Updated: 2019/09/17 13:45:41 by xmoreau     ###    #+. /#+    ###.fr     */
+/*                                                         /                  */
+/*                                                        /                   */
+/* ************************************************************************** */
 
 #include "../includes/malloc.h"
-
 
 static void		*get_ptr(size_t size, int zone_size)
 {
@@ -22,18 +30,24 @@ static void		*get_ptr(size_t size, int zone_size)
 	return (new_ptr);
 }
 
+int				get_zone_type(size_t size)
+{
+	if (size <= TINY)
+		return TINY;
+	else if (size <= SMALL)
+		return TINY;
+	return (LARGE);
+}
+
 void			*ft_malloc(size_t size)
 {
 	void		*new_ptr;
+	int			zone_type;
 
 	new_ptr = NULL;
 	if (size <= 0)
-		return new_ptr;
-	if (size <=  TINY * 64)
-		new_ptr = get_ptr(size, TINY);
-	else if (size <= SMALL)
-		new_ptr = get_ptr(size, SMALL);
-	else
-		new_ptr = get_ptr(size, LARGE);
+		return (new_ptr);
+	zone_type = get_zone_type(size);
+	new_ptr = get_ptr(size, zone_type);
 	return (new_ptr);
 }

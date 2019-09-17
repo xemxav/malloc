@@ -1,55 +1,54 @@
-//
-// Created by Xavier-emmanuel Moreau on 2019-09-10.
-//
+/* ************************************************************************** */
+/*                                                          LE - /            */
+/*                                                              /             */
+/*   zoning.c                                         .::    .:/ .      .::   */
+/*                                                 +:+:+   +:    +:  +:+:+    */
+/*   By: xmoreau <xmoreau@student.le-101.fr>        +:+   +:    +:    +:+     */
+/*                                                 #+#   #+    #+    #+#      */
+/*   Created: 2019/09/17 12:18:01 by xmoreau      #+#   ##    ##    #+#       */
+/*   Updated: 2019/09/17 12:18:01 by xmoreau     ###    #+. /#+    ###.fr     */
+/*                                                         /                  */
+/*                                                        /                   */
+/* ************************************************************************** */
 
 #include "../includes/malloc.h"
 
-t_zone		*g_zone = NULL;
+t_zone			*g_zone = NULL;
 
 
-//todo : creer une fonction qui verifie si il y a de la place pour une alloc entre 2 allocs
-t_alloc			*make_new_alloc(size_t size, t_zone *current_zone)
+static size_t		get_mult(int zone_size, size_t size)
 {
-	t_alloc		*last;
-	t_alloc		*adr_new_alloc;
+	size_t			mult;
 
-
-	adr_new_alloc = NULL;
-	last = NULL;
-	if (current_zone->allocs == NULL)
-	{
-		adr_new_alloc = (void*)(current_zone) + sizeof(t_zone);
-		current_zone->allocs = adr_new_alloc;
-	}
+	if (zone_size == TINY)
+		return (TINY_MULT);
+	if (zone_size == SMALL)
+		return (SMALL_MULT);
+	if ((size + sizeof(t_alloc) + sizeof(t_zone)) % getpagesize() > 0)
+		mult = ((size + sizeof(t_alloc) + sizeof(t_zone)) / getpagesize() + 1);
 	else
-	{
-		last = current_zone->allocs;
-		while(last->next != NULL)
-			last = last->next;
-		last->next = (void *)(last + 1) + (last->size + 1);
-		adr_new_alloc = last->next;
-	}
-	adr_new_alloc->next = NULL;
-	adr_new_alloc->size = size;
-	current_zone->allocated += sizeof(t_alloc) + size;
-	return (adr_new_alloc);
+		mult = ((size + sizeof(t_alloc) + sizeof(t_zone)) / getpagesize());
+	if (mult == 0)
+		mult = 1;
+	printf("LARGE mult = %zu", mult);
+	return (mult);
 }
 
-
-t_zone		*create_zone(int zone_size)
+t_zone			*create_zone(int zone_size, size_t size)
 {
-	t_zone	*tmp;
-	t_zone	*zone;
+	t_zone		*tmp;
+	t_zone		*zone;
 
-//	Todo : Changer la taille du multiple de get page size (faire un macor avec zone size ?
-	if ((zone = (t_zone*)mmap(0, getpagesize() * 1, PROT_READ|PROT_WRITE, MAP_ANON|MAP_SHARED, -1, 0)) == MAP_FAILED)
+	if ((zone = (t_zone*)mmap(0, getpagesize() * get_mult(zone_size, size),
+			PROT_READ | PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0))
+			== MAP_FAILED)
 		return (NULL);
 	if (g_zone == NULL)
 		g_zone = zone;
 	else
 	{
 		tmp = g_zone;
-		while(tmp->next != NULL)
+		while (tmp->next != NULL)
 			tmp = tmp->next;
 		tmp->next = zone;
 	}
@@ -60,23 +59,22 @@ t_zone		*create_zone(int zone_size)
 	return (zone);
 }
 
-
-t_zone		*get_current_zone(int zone_size, int req_size)
+t_zone			*get_current_zone(int zone_size, int req_size)
 {
-	t_zone	*tmp;
+	t_zone		*tmp;
 
 	tmp = g_zone;
 	if (zone_size == LARGE || g_zone == NULL)
-		return (create_zone(zone_size));
-	while(tmp != NULL)
+		return (create_zone(zone_size, req_size));
+	while (tmp != NULL)
 	{
-//		Todo : Changer la taille du multiple de get page size (faire un macro avec zone size) ?
 		if (tmp->type_size == zone_size)
 		{
-			if ((tmp->allocated + req_size + sizeof(t_alloc)) <= (unsigned long)(getpagesize() * 1))
+			if ((tmp->allocated + req_size + sizeof(t_alloc)) <=
+				(unsigned long)(getpagesize() * get_mult(zone_size, req_size)))
 				return (tmp);
 		}
 		tmp = tmp->next;
 	}
-	return (create_zone(zone_size));
+	return (create_zone(zone_size, req_size));
 }
