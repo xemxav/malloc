@@ -58,6 +58,7 @@ t_zone				*get_current_zone(int zone_size, int req_size);
 
 void 				show_alloc_mem();
 void				print_adress(void *adrr);
+void				show_alloc_mem_ex(void *zone, size_t size);
 
 //void    			ft_free(void *ptr);
 //void    			*ft_realloc(void *ptr, size_t size);

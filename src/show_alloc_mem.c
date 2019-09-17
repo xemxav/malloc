@@ -86,20 +86,51 @@ static void		show_type(int type_size, char *type)
 
 }
 
-//void	show_alloc_mem_ex(void *zone, size_t size)
-//{
-//	size_t			i;
-//	unsigned char	*tmp;
-//
-//	i = 0;
-//	tmp = (unsigned char *)adr;
-//	while (i < size)
-//	{
-//
-//		write(1, &(tmp[i]),1)
-//	}
-//
-//}
+static void		print_hexa(unsigned char tmp)
+{
+	char		*ref;
+	char		str[3];
+	int			i;
+
+	i = 1;
+	ref = "0123456789abcdef\0";
+	str[2] = '\0';
+	while (i >= 0)
+	{
+		str[i] = ref[tmp % 16];
+		tmp /= 16;
+		i--;
+	}
+	ft_putstr(str);
+}
+
+
+void	show_alloc_mem_ex(void *zone, size_t size)
+{
+	size_t			i;
+	int				y;
+	unsigned char	*tmp;
+
+	i = 0;
+	tmp = (unsigned char *)zone;
+	while (i < size)
+	{
+		y = 0;
+		print_adress(zone);
+		ft_putchar(' ');
+		while (y < 16)
+		{
+			print_hexa(tmp[i]);
+			i++;
+			y++;
+			zone++;
+			if (y < 16)
+				ft_putchar(' ');
+		}
+		ft_putchar('\n');
+	}
+
+}
 
 void 	show_alloc_mem()
 {

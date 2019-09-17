@@ -16,12 +16,9 @@ t_alloc			*make_new_alloc(size_t size, t_zone *current_zone)
 
 	adr_new_alloc = NULL;
 	last = NULL;
-	ft_printf("allocated = %d et type size = %d\n", current_zone->allocated, current_zone->type_size);
 	if (current_zone->allocs == NULL)
 	{
-		printf("current zone = %p\n", current_zone);
 		adr_new_alloc = (void*)(current_zone) + sizeof(t_zone);
-		printf("adr_new_alloc  = %p\n", adr_new_alloc);
 		current_zone->allocs = adr_new_alloc;
 	}
 	else
@@ -29,28 +26,22 @@ t_alloc			*make_new_alloc(size_t size, t_zone *current_zone)
 		last = current_zone->allocs;
 		while(last->next != NULL)
 			last = last->next;
-		printf("last = %p\n", last);
 		last->next = (void *)(last + 1) + (last->size + 1);
 		adr_new_alloc = last->next;
-		printf("adr_new_alloc  = %p\n", adr_new_alloc);
-
 	}
 	adr_new_alloc->next = NULL;
 	adr_new_alloc->size = size;
 	current_zone->allocated += sizeof(t_alloc) + size;
-	printf("current_zone->allocs = %p\n", current_zone->allocs);
 	return (adr_new_alloc);
 }
 
 
 t_zone		*create_zone(int zone_size)
 {
-//	t_zone	*adr_new_zone;
 	t_zone	*tmp;
 	t_zone	*zone;
 
 //	Todo : Changer la taille du multiple de get page size (faire un macor avec zone size ?
-//	adr_new_zone = NULL;
 	if ((zone = (t_zone*)mmap(0, getpagesize() * 1, PROT_READ|PROT_WRITE, MAP_ANON|MAP_SHARED, -1, 0)) == MAP_FAILED)
 		return (NULL);
 	if (g_zone == NULL)
@@ -62,12 +53,10 @@ t_zone		*create_zone(int zone_size)
 			tmp = tmp->next;
 		tmp->next = zone;
 	}
-//	zone = adr_new_zone;
 	zone->allocated = sizeof(t_zone);
 	zone->type_size = zone_size;
 	zone->next = NULL;
 	zone->allocs = NULL;
-//	ft_memcpy((void*)adr_new_zone, (void*)&zone, sizeof(zone));
 	return (zone);
 }
 
