@@ -45,7 +45,7 @@ void    			*ft_realloc(void *ptr, size_t size)
 	new_ptr = NULL;
 	new_alloc = NULL;
 	ft_bzero((void*)&info, sizeof(t_info));
-	if (size <= 0 || ptr == NULL)
+	if (size <= 0 || ptr == NULL || g_zone == NULL)
 		return (ptr); //todo: verifier si return NULL ou le ptr
 	info.old_ptr = ptr;
 	retrieve_alloc_from_ptr(&info);

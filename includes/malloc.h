@@ -86,15 +86,18 @@ t_alloc				*make_new_alloc(size_t size, t_zone *current_zone);
 void				retrieve_alloc_from_ptr(t_info *info);
 
 /*
-**		SHOw_ALLOC_MEM
+**		SHOw_ALLOC_MEM.C
 */
 void				show_alloc_mem();
 void				print_adress(void *adrr);
 /*
-**		SHOw_ALLOC_MEM
+**		SHOw_ALLOC_MEM_EX.C
 */
 void				show_alloc_mem_ex(void *zone, size_t size);
-
-//void    			ft_free(void *ptr);
+/*
+**		FREE.C
+*/
+void    			ft_free(void *ptr);
+void				delete_alloc(t_info *info);
 
 #endif

@@ -22,12 +22,13 @@ int		main()
 	if (ptr_test2 == NULL)
 		ft_putstr("c'est fini 2\n");
 	show_alloc_mem_ex((void*)g_zone, 100);
-
+	ft_free(ptr_test);
+	printf("apres free\n");
+	show_alloc_mem_ex((void*)g_zone, 100);
 
 	printf("\n\n");
+
 	show_alloc_mem();
-
-
 
 	printf("\n\n");
 

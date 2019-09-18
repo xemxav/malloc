@@ -13,7 +13,7 @@ PATH_INC = ./includes/
 #******************************************************************************#
 
 FILES = main malloc zoning show_alloc_mem show_alloc_mem_ex allocations \
-get_adresses realloc
+get_adresses realloc free
 
 
 OBJ = $(addprefix $(PATH_OBJ), $(addsuffix .o , $(FILES)))
