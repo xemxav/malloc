@@ -20,7 +20,7 @@ static void		*get_ptr(size_t size, int zone_size)
 	t_zone		*current_zone;
 	void		*new_ptr;
 
-	current_zone = get_current_zone(zone_size, size);
+	current_zone = get_current_zone(zone_size, size, NULL);
 	if (current_zone == NULL)
 		return (NULL);
 	new_alloc = make_new_alloc(size, current_zone);

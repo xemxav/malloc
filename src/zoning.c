@@ -15,8 +15,7 @@
 
 t_zone			*g_zone = NULL;
 
-
-static size_t		get_mult(int zone_size, size_t size)
+size_t		get_mult(int zone_size, size_t size)
 {
 	size_t			mult;
 
@@ -59,7 +58,27 @@ t_zone			*create_zone(int zone_size, size_t size)
 	return (zone);
 }
 
-t_zone			*get_current_zone(int zone_size, int req_size)
+int 			has_enough_place(t_zone *zone, size_t req_size, int to_create)
+{
+	if (to_create == 1)
+	{
+		if ((zone->allocated + req_size + sizeof(t_alloc)) <=
+			(unsigned long)(getpagesize() * get_mult(zone->type_size, req_size)))
+				return (1);
+	}
+	else
+	{
+		if ((zone->allocated + req_size) <=
+			(unsigned long)(getpagesize() * get_mult(zone->type_size, req_size)))
+				return (1);
+	}
+	return (0);
+
+}
+
+
+t_zone			*get_current_zone(int zone_size,
+									int req_size, t_zone *current_zone)
 {
 	t_zone		*tmp;
 
@@ -68,11 +87,17 @@ t_zone			*get_current_zone(int zone_size, int req_size)
 		return (create_zone(zone_size, req_size));
 	while (tmp != NULL)
 	{
-		if (tmp->type_size == zone_size)
+		if (current_zone != NULL)
 		{
-			if ((tmp->allocated + req_size + sizeof(t_alloc)) <=
-				(unsigned long)(getpagesize() * get_mult(zone_size, req_size)))
-				return (tmp);
+			if (tmp->type_size == zone_size && tmp != current_zone &&
+				has_enough_place(tmp, req_size, 1) == 1)
+					return (tmp);
+		}
+		else
+		{
+			if (tmp->type_size == zone_size &&
+				has_enough_place(tmp, req_size, 1) == 1)
+					return (tmp);
 		}
 		tmp = tmp->next;
 	}
