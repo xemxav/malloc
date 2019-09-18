@@ -12,7 +12,10 @@ PATH_INC = ./includes/
 #                              MALLOC TEST                                  #
 #******************************************************************************#
 
-FILES = main malloc zoning show_alloc_mem show_alloc_mem_ex allocations
+FILES = main malloc zoning show_alloc_mem show_alloc_mem_ex allocations \
+get_adresses
+
+
 OBJ = $(addprefix $(PATH_OBJ), $(addsuffix .o , $(FILES)))
 SRC = $(addprefix $(PATH_SRC), $(addsuffix .c , $(FILES)))
 

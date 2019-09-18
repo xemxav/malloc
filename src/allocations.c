@@ -22,18 +22,18 @@ t_alloc			*find_proper_alloc(t_alloc *last, size_t size)
 	new = NULL;
 	while (last->next != NULL)
 	{
-		if ((void *)(last + 1) + (last->size + 1) != (void*)last->next)
+		if (get_new_alloc_from_last(last) != (void*)last->next)
 		{ //todo : a tester avec realloc
 			if ((void*)last->next - size - sizeof(t_alloc) >
-					(void *)(last + 1) + (last->size + 1))
-			new = (void *)(last + 1) + (last->size + 1) ;
+					get_new_alloc_from_last(last))
+			new = get_new_alloc_from_last(last);
 			new->next = last->next;
 			last->next = new;
 			return (new);
 		}
 		last = last->next;
 	}
-	last->next = (void *)(last + 1) + (last->size + 1);
+	last->next = get_new_alloc_from_last(last);
 	new = last->next;
 	//todo : verifier si on ne sort pas de la zone en cas de realloc
 	return (new);

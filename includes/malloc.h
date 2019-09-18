@@ -57,6 +57,11 @@ typedef struct 		s_info
 void				*ft_malloc(size_t size);
 t_alloc				*make_new_alloc(size_t size, t_zone *current_zone);
 int					get_zone_type(size_t size);
+/*
+**		GET_ADRESSES.C
+*/
+void				*get_ptr_from_alloc(t_alloc	*alloc);
+t_alloc				*get_new_alloc_from_last(t_alloc *last);
 
 /*
 **		REALLOC.C

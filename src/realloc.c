@@ -42,8 +42,10 @@ void    			*ft_realloc(void *ptr, size_t size)
 	void		*new_ptr;
 	t_info		info;
 	int			req_zone_type;
+	t_alloc		*new_alloc;
 
 	new_ptr = NULL;
+	new_alloc = NULL;
 	ft_bzero((void*)&info, sizeof(t_info));
 	if (size <= 0)
 		return (new_ptr);
@@ -52,10 +54,16 @@ void    			*ft_realloc(void *ptr, size_t size)
 		return (NULL);
 	req_zone_type = get_zone_type(size);
 	if (req_zone_type == info.zone->type_size)
-	{
-		si info.alloc->next == NULL et assez de place -> modifier size
-		si info.alloc et diff avec la prochaine assez grande -> modifier size
-		si info.alloc et diff avec next pas assez grande -> nouvele aloc si assez de place
+		new_alloc = same_zone_alloc(&info);
+//		si info.alloc->next == NULL et assez de place -> modifier size
+//		si info.alloc et diff avec la prochaine assez grande -> modifier size
+//		si info.alloc et diff avec next pas assez grande -> nouvele aloc si assez de place
 
+
+	else
+	{
+		//trouver une place avec de la place -> get_current va donner une page ou la créer
+		//
 	}
+	return (new_ptr);
 }
