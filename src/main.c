@@ -25,7 +25,10 @@ int		main()
 	ft_free(ptr_test);
 	printf("apres free\n");
 	show_alloc_mem_ex((void*)g_zone, 100);
-
+	ptr_test = ft_malloc(sizeof(char) * 5);
+	ft_memcpy((void*)ptr_test, "1234\0", sizeof(char) * 5);
+	printf("apres nouveau malloc\n");
+	show_alloc_mem_ex((void*)g_zone, 100);
 	printf("\n\n");
 
 	show_alloc_mem();

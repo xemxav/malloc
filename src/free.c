@@ -14,6 +14,13 @@
 
 #include "../includes/malloc.h"
 
+static void make_clean(t_alloc *tmp, t_info *info)
+{
+	info->zone->allocated -= info->alloc->size;
+	ft_bzero(info->old_ptr, info->alloc->size);
+	ft_bzero(tmp, sizeof(t_alloc));
+}
+
 void	delete_alloc(t_info *info)
 {
 	t_alloc		*tmp;
@@ -22,25 +29,20 @@ void	delete_alloc(t_info *info)
 	if (tmp == info->zone->allocs)
 	{
 		if (tmp->next != NULL)
-			info->zone->allocs->next = tmp->next;
+			info->zone->allocs = tmp->next;
 		else
-			info->zone->allocs->next = NULL;
-		ft_bzero(info->old_ptr, info->alloc->size);
-		ft_bzero(tmp, sizeof(t_alloc));
-		return;
+			info->zone->allocs = NULL;
+		return make_clean(tmp, info);
 	}
 	while (tmp->next != info->zone->allocs)
 		tmp = tmp->next;
 	if (info->zone->allocs->next == NULL)
 	{
 		tmp->next = NULL;
-		ft_bzero(info->old_ptr, info->alloc->size);
-		ft_bzero(tmp, sizeof(t_alloc));
-		return;
+		return make_clean(tmp, info);
 	}
 	tmp->next = info->zone->allocs->next;
-	ft_bzero(info->old_ptr, info->alloc->size);
-	ft_bzero(tmp, sizeof(t_alloc));
+	return make_clean(tmp, info);
 }
 
 void	ft_free(void *ptr)
@@ -53,8 +55,6 @@ void	ft_free(void *ptr)
 	info.old_ptr = ptr;
 	retrieve_alloc_from_ptr(&info);
 	if (info.alloc == NULL || info.zone == NULL)
-	{		printf("a pas retrieve\n");
-		return ;}
-	printf("coucou\n");
+		return ;
 	delete_alloc(&info);
 }

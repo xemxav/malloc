@@ -19,16 +19,13 @@ void			retrieve_alloc_from_ptr(t_info *info)
 	t_alloc			*alloc;
 
 	zone = g_zone;
-	printf("adresse g_zone = %p\nadresse zone = %p\n", g_zone, zone);
 	while (zone != NULL)
 	{
 		alloc = zone->allocs;
 		while (alloc != NULL)
 		{
-			printf("from = %p ; old_ptr =%p\n", get_ptr_from_alloc(alloc), info->old_ptr);
 			if (get_ptr_from_alloc(alloc) == info->old_ptr)
 			{
-				printf("a trouve\n");
 				info->zone = zone;
 				info->alloc = alloc;
 				return ;
