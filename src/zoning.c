@@ -13,93 +13,112 @@
 
 #include "../includes/malloc.h"
 
-t_zone			*g_zone = NULL;
+t_mapping			*g_mapping = NULL;
 
-size_t		get_mult(int zone_size, size_t size)
+t_mapping			*init_mapping()
 {
-	size_t			mult;
+	t_mapping		*new_map;
 
-	if (zone_size == TINY)
-		return (TINY_MULT);
-	if (zone_size == SMALL)
-		return (SMALL_MULT);
-	if ((size + sizeof(t_alloc) + sizeof(t_zone)) % getpagesize() > 0)
-		mult = ((size + sizeof(t_alloc) + sizeof(t_zone)) / getpagesize() + 1);
-	else
-		mult = ((size + sizeof(t_alloc) + sizeof(t_zone)) / getpagesize());
-	if (mult == 0)
-		mult = 1;
-	printf("LARGE mult = %zu", mult);
-	return (mult);
-}
-
-t_zone			*create_zone(int zone_size, size_t size)
-{
-	t_zone		*tmp;
-	t_zone		*zone;
-
-	if ((zone = (t_zone*)mmap(0, getpagesize() * get_mult(zone_size, size),
+	new_map = NULL;
+	new_map = (t_mapping*)mmap(0,sizeof(g_mapping),
 			PROT_READ | PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0))
-			== MAP_FAILED)
+	if (new_map == MAP_FAILED)
 		return (NULL);
-	if (g_zone == NULL)
-		g_zone = zone;
+	ft_bzero((void*)new_map, sizeof(t_mapping));
+	g_mapping = new_map;
+	return (new_map);
+}
+
+t_large		*init_large(size_t size)
+{
+	t_large			*large;
+	t_large			*tmp;
+
+	large = NULL;
+	if (g_mapping == NULL)
+		g_mapping = init_mapping()
+	if (g_mapping == NULL)
+		return (NULL);
+	large = (t_large*)mmap(0,sizeof(g_large),
+						 PROT_READ | PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0))
+	if (large == MAP_FAILED)
+		return (NULL);
+	ft_bzero((void*)large, sizeof(t_large));
+	if (g_mapping->large == NULL)
+		g_mapping->large = large;
 	else
 	{
-		tmp = g_zone;
-		while (tmp->next != NULL)
+		tmp = g_mapping->large;
+		while(tmp->next != NULL)
 			tmp = tmp->next;
-		tmp->next = zone;
+		tmp->next = NULL;
 	}
-	zone->allocated = sizeof(t_zone);
-	zone->type_size = zone_size;
-	zone->next = NULL;
-	zone->allocs = NULL;
-	return (zone);
+	large->zone_adr = (void*)mmap(0,large,PROT_READ
+												   | PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0))
+	if (large->zone_adr == MAP_FAILED)
+		return (NULL)
+	return (large);
 }
 
-int 			has_enough_place(t_zone *zone, size_t req_size, int to_create)
+t_small		*init_small()
 {
-	if (to_create == 1)
-	{
-		if ((zone->allocated + req_size + sizeof(t_alloc)) <=
-			(unsigned long)(getpagesize() * get_mult(zone->type_size, req_size)))
-				return (1);
-	}
+	t_small			*small;
+	t_small			*tmp;
+
+	small = NULL;
+	if (g_mapping == NULL)
+		g_mapping = init_mapping()
+	if (g_mapping == NULL)
+		return (NULL);
+	small = (t_small*)mmap(0,sizeof(g_small),
+						 PROT_READ | PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0))
+	if (small == MAP_FAILED)
+		return (NULL);
+	ft_bzero((void*)small, sizeof(t_small));
+	if (g_mapping->small == NULL)
+		g_mapping->small = small;
 	else
 	{
-		if ((zone->allocated + req_size) <=
-			(unsigned long)(getpagesize() * get_mult(zone->type_size, req_size)))
-				return (1);
+		tmp = g_mapping->small;
+		while(tmp->next != NULL)
+			tmp = tmp->next;
+		tmp->next = NULL;
 	}
-	return (0);
-
+	small->zone_adr = (void*)mmap(0, SMALL_PAGE_SIZE,PROT_READ
+	| PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0))
+	if (small->zone_adr == MAP_FAILED)
+		return (NULL)
+	return (small);
 }
 
-
-t_zone			*get_current_zone(int zone_size,
-									int req_size, t_zone *current_zone)
+t_tiny		*init_tiny()
 {
-	t_zone		*tmp;
+	t_tiny			*tiny;
+	t_tiny			*tmp;
 
-	tmp = g_zone;
-	if (zone_size == LARGE || g_zone == NULL)
-		return (create_zone(zone_size, req_size));
-	while (tmp != NULL)
+	tiny = NULL;
+	if (g_mapping == NULL)
+		g_mapping = init_mapping()
+	if (g_mapping == NULL)
+		return (NULL);
+	tiny = (t_tiny*)mmap(0,sizeof(g_tiny),
+						   PROT_READ | PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0))
+	if (tiny == MAP_FAILED)
+		return (NULL);
+	ft_bzero((void*)tiny, sizeof(t_tiny));
+	if (g_mapping->tiny == NULL)
+		g_mapping->tiny = tiny;
+	else
 	{
-		if (current_zone != NULL)
-		{
-			if (tmp->type_size == zone_size && tmp != current_zone &&
-				has_enough_place(tmp, req_size, 1) == 1)
-					return (tmp);
-		}
-		else
-		{
-			if (tmp->type_size == zone_size &&
-				has_enough_place(tmp, req_size, 1) == 1)
-					return (tmp);
-		}
-		tmp = tmp->next;
+		tmp = g_mapping->tiny;
+		while(tmp->next != NULL)
+			tmp = tmp->next;
+		tmp->next = NULL;
 	}
-	return (create_zone(zone_size, req_size));
+	tiny->zone_adr = (void*)mmap(0, TINY_PAGE_SIZE,PROT_READ
+	| PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0))
+	if (tiny->zone_adr == MAP_FAILED)
+		return (NULL)
+	return (tiny);
 }
+

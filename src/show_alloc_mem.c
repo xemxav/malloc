@@ -49,53 +49,53 @@ void				print_adress(void *adrr)
 	ft_putstr(str);
 }
 
-static void			print_allocs(t_zone *zone)
-{
-	t_alloc			*tmp;
+//static void			print_allocs(t_zone *zone)
+//{
+//	t_alloc			*tmp;
+//
+//	tmp = NULL;
+//	if (zone->allocs == NULL)
+//		return ;
+//	tmp = zone->allocs;
+//	while (tmp != NULL)
+//	{
+//		print_adress((void*)(tmp) + sizeof(t_alloc) + 1);
+//		ft_putstr(" - ");
+//		print_adress((void*)(tmp) + sizeof(t_alloc) + 1 + tmp->size);
+//		ft_putstr(" : ");
+//		ft_putnbr(tmp->size);
+//		ft_putstr(" octets\n");
+//		tmp = tmp->next;
+//	}
+//}
 
-	tmp = NULL;
-	if (zone->allocs == NULL)
-		return ;
-	tmp = zone->allocs;
-	while (tmp != NULL)
-	{
-		print_adress((void*)(tmp) + sizeof(t_alloc) + 1);
-		ft_putstr(" - ");
-		print_adress((void*)(tmp) + sizeof(t_alloc) + 1 + tmp->size);
-		ft_putstr(" : ");
-		ft_putnbr(tmp->size);
-		ft_putstr(" octets\n");
-		tmp = tmp->next;
-	}
-}
-
-static void			show_type(int type_size, char *type)
-{
-	t_zone			*tmp;
-
-	tmp = g_zone;
-	while (tmp != NULL)
-	{
-		if (tmp->type_size == type_size)
-		{
-			// todo: enlever les print de tests
-			ft_putstr(type);
-			ft_putchar(' ');
-			ft_putnbr(tmp->allocated);
-			ft_putchar(' ');
-			ft_putnbr(sizeof(t_zone) + 2 * sizeof(t_alloc));
-			ft_putstr(" : ");
-			print_adress((void*)tmp);
-			ft_putchar('\n');
-			print_allocs(tmp);
-		}
-		tmp = tmp->next;
-	}
-}
-
-void				show_alloc_mem()
-{
-	show_type(TINY, "TINY");
-//	show_type(SMALL, "SMALL");
-//	show_type(LARGE, "LARGE");
-}
+//static void			show_type(int type_size, char *type)
+//{
+//	t_zone			*tmp;
+//
+//	tmp = g_zone;
+//	while (tmp != NULL)
+//	{
+//		if (tmp->type_size == type_size)
+//		{
+//			// todo: enlever les print de tests
+//			ft_putstr(type);
+//			ft_putchar(' ');
+//			ft_putnbr(tmp->allocated);
+//			ft_putchar(' ');
+//			ft_putnbr(sizeof(t_zone) + 2 * sizeof(t_alloc));
+//			ft_putstr(" : ");
+//			print_adress((void*)tmp);
+//			ft_putchar('\n');
+//			print_allocs(tmp);
+//		}
+//		tmp = tmp->next;
+//	}
+//}
+//
+//void				show_alloc_mem()
+//{
+//	show_type(TINY, "TINY");
+////	show_type(SMALL, "SMALL");
+////	show_type(LARGE, "LARGE");
+//}

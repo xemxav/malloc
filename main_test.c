@@ -6,15 +6,12 @@
 # include <stdio.h>
 #include <stdlib.h>
 
-typedef struct s_test
-{
-	char			a[256];
-//	struct s_test		*next;
-} t_test;
+# define SMALL ((512 * 100) / getpagesize())
+
 
 
 int main()
 {
-	printf("sizeof t_test = %lu", sizeof(t_test));
+	printf("%d\n", SMALL);
 	return (0);
 }
