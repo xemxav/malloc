@@ -13,15 +13,15 @@
 
 #include "../includes/malloc.h"
 
-t_mapping			*g_mapping = NULL;
+t_mapping *g_mapping = NULL;
 
 t_mapping			*init_mapping()
 {
 	t_mapping		*new_map;
 
 	new_map = NULL;
-	new_map = (t_mapping*)mmap(0,sizeof(g_mapping),
-			PROT_READ | PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0))
+	new_map = (t_mapping*)mmap(0,sizeof(t_mapping),
+			PROT_READ | PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
 	if (new_map == MAP_FAILED)
 		return (NULL);
 	ft_bzero((void*)new_map, sizeof(t_mapping));
@@ -29,18 +29,34 @@ t_mapping			*init_mapping()
 	return (new_map);
 }
 
-t_large		*init_large(size_t size)
+
+int			**init_tab(int tab_size)
+{
+	int 	**tab;
+
+
+	tab = (int**)mmap(0, 2, PROT_READ |
+	PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
+	if (tab == NULL)
+		return (NULL);
+	tab[0] = (int*)mmap(0, tab_size, PROT_READ |
+	PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
+	tab[1] = (int*)mmap(0, tab_size, PROT_READ |
+	PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
+	if (tab[0] == MAP_FAILED || tab[1] == MAP_FAILED)
+		return (NULL);
+	printf("init_tab\n");
+	return (tab);
+}
+
+t_large				*init_large(size_t size)
 {
 	t_large			*large;
 	t_large			*tmp;
 
 	large = NULL;
-	if (g_mapping == NULL)
-		g_mapping = init_mapping()
-	if (g_mapping == NULL)
-		return (NULL);
-	large = (t_large*)mmap(0,sizeof(g_large),
-						 PROT_READ | PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0))
+	large = (t_large*)mmap(0,sizeof(t_large),
+						 PROT_READ | PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
 	if (large == MAP_FAILED)
 		return (NULL);
 	ft_bzero((void*)large, sizeof(t_large));
@@ -53,10 +69,10 @@ t_large		*init_large(size_t size)
 			tmp = tmp->next;
 		tmp->next = NULL;
 	}
-	large->zone_adr = (void*)mmap(0,large,PROT_READ
-												   | PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0))
+	large->zone_adr = (void*)mmap(0, size, PROT_READ
+	| PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
 	if (large->zone_adr == MAP_FAILED)
-		return (NULL)
+		return (NULL);
 	return (large);
 }
 
@@ -66,12 +82,8 @@ t_small		*init_small()
 	t_small			*tmp;
 
 	small = NULL;
-	if (g_mapping == NULL)
-		g_mapping = init_mapping()
-	if (g_mapping == NULL)
-		return (NULL);
-	small = (t_small*)mmap(0,sizeof(g_small),
-						 PROT_READ | PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0))
+	small = (t_small*)mmap(0,sizeof(t_small),
+			PROT_READ | PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
 	if (small == MAP_FAILED)
 		return (NULL);
 	ft_bzero((void*)small, sizeof(t_small));
@@ -85,9 +97,11 @@ t_small		*init_small()
 		tmp->next = NULL;
 	}
 	small->zone_adr = (void*)mmap(0, SMALL_PAGE_SIZE,PROT_READ
-	| PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0))
+	| PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
 	if (small->zone_adr == MAP_FAILED)
-		return (NULL)
+		return (NULL);
+	if ((small->tab = init_tab(SMALL_TAB_SIZE)) == NULL)
+		return (NULL);
 	return (small);
 }
 
@@ -97,12 +111,9 @@ t_tiny		*init_tiny()
 	t_tiny			*tmp;
 
 	tiny = NULL;
-	if (g_mapping == NULL)
-		g_mapping = init_mapping()
-	if (g_mapping == NULL)
-		return (NULL);
-	tiny = (t_tiny*)mmap(0,sizeof(g_tiny),
-						   PROT_READ | PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0))
+
+	tiny = (t_tiny*)mmap(0,sizeof(t_tiny),
+			PROT_READ | PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
 	if (tiny == MAP_FAILED)
 		return (NULL);
 	ft_bzero((void*)tiny, sizeof(t_tiny));
@@ -116,9 +127,11 @@ t_tiny		*init_tiny()
 		tmp->next = NULL;
 	}
 	tiny->zone_adr = (void*)mmap(0, TINY_PAGE_SIZE,PROT_READ
-	| PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0))
+	| PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
 	if (tiny->zone_adr == MAP_FAILED)
-		return (NULL)
+		return (NULL);
+	if ((tiny->tab = init_tab(TINY_TAB_SIZE)) == NULL)
+		return (NULL);
+	printf("init_tiny\n");
 	return (tiny);
 }
-

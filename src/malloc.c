@@ -13,40 +13,25 @@
 
 #include "../includes/malloc.h"
 
-
-static void		*get_ptr(size_t size, int zone_size)
+static void		*get_ptr(size_t size)
 {
-	t_zone		*current_zone;
-	void		*new_ptr;
-
-	current_zone = get_current_zone(zone_size, size, NULL);
-	if (current_zone == NULL)
-		return (NULL);
-	printf("current_zone = %p\nsizeof current_zone = %lu\n", current_zone, sizeof(t_zone));
-	printf("new_alloc = %p\nsizeof new_alloc = %lu\n", new_alloc, sizeof(t_alloc));
-	new_ptr = get_ptr_from_alloc(new_alloc);
-	printf("new_ptr = %p\n", new_ptr);
-	return (new_ptr);
-}
-
-int				get_zone_type(size_t size)
-{
+	printf("get_ptr\n");
 	if (size <= TINY)
-		return TINY;
-	else if (size <= SMALL)
-		return TINY;
-	return (LARGE);
+		return (get_tiny_zone(size));
+	if (size <= SMALL)
+		return (get_tiny_zone(size));
+	if (size >= LARGE)
+		return (get_tiny_zone(size));
+	return (NULL);
 }
 
 void			*ft_malloc(size_t size)
 {
 	void		*new_ptr;
-	int			zone_type;
 
 	new_ptr = NULL;
 	if (size <= 0)
 		return (new_ptr);
-	zone_type = get_zone_type(size);
-	new_ptr = get_ptr(size, zone_type);
+	new_ptr = get_ptr(size);
 	return (new_ptr);
 }

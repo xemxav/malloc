@@ -49,53 +49,94 @@ void				print_adress(void *adrr)
 	ft_putstr(str);
 }
 
-//static void			print_allocs(t_zone *zone)
-//{
-//	t_alloc			*tmp;
-//
-//	tmp = NULL;
-//	if (zone->allocs == NULL)
-//		return ;
-//	tmp = zone->allocs;
-//	while (tmp != NULL)
-//	{
-//		print_adress((void*)(tmp) + sizeof(t_alloc) + 1);
-//		ft_putstr(" - ");
-//		print_adress((void*)(tmp) + sizeof(t_alloc) + 1 + tmp->size);
-//		ft_putstr(" : ");
-//		ft_putnbr(tmp->size);
-//		ft_putstr(" octets\n");
-//		tmp = tmp->next;
-//	}
-//}
+static void				show_large()
+{
+	t_large			*large;
+	int				i;
 
-//static void			show_type(int type_size, char *type)
-//{
-//	t_zone			*tmp;
-//
-//	tmp = g_zone;
-//	while (tmp != NULL)
-//	{
-//		if (tmp->type_size == type_size)
-//		{
-//			// todo: enlever les print de tests
-//			ft_putstr(type);
-//			ft_putchar(' ');
-//			ft_putnbr(tmp->allocated);
-//			ft_putchar(' ');
-//			ft_putnbr(sizeof(t_zone) + 2 * sizeof(t_alloc));
-//			ft_putstr(" : ");
-//			print_adress((void*)tmp);
-//			ft_putchar('\n');
-//			print_allocs(tmp);
-//		}
-//		tmp = tmp->next;
-//	}
-//}
-//
-//void				show_alloc_mem()
-//{
-//	show_type(TINY, "TINY");
-////	show_type(SMALL, "SMALL");
-////	show_type(LARGE, "LARGE");
-//}
+	i = 0;
+	if (g_mapping == NULL || g_mapping->large == NULL)
+		return ;
+	large = g_mapping->large;
+	while(large != NULL)
+	{
+		ft_putstr("LARGE : ");
+		print_adress((void*)large->zone_adr);
+		ft_putstr("\n");
+		print_adress((void*)large->zone_adr);
+		ft_putstr(" - ");
+		print_adress((void*)large->zone_adr + large->size);
+		ft_putstr(" : ");
+		ft_putnbr(large->size);
+		ft_putstr(" octets\n");
+		large = large->next;
+	}
+}
+
+static void				show_small()
+{
+	t_small			*small;
+	int				i;
+
+	i = 0;
+	if (g_mapping == NULL || g_mapping->small == NULL)
+		return ;
+	small = g_mapping->small;
+	while (small != NULL)
+	{
+		ft_putstr("SMALL : ");
+		print_adress((void*)small->zone_adr);
+		ft_putstr("\n");
+		while (i < TINY_TAB_SIZE)
+		{
+			if (small->tab[0][i] == 1)
+			{
+				print_adress((void*)small->zone_adr + (i * SMALL));
+				ft_putstr(" - ");
+				print_adress((void*)small->zone_adr + (i * SMALL) + small->tab[1][i] - 1);
+				ft_putstr(" : ");
+				ft_putnbr(small->tab[1][i]);
+				ft_putstr(" octets\n");
+			}
+			i++;
+		}
+		small = small->next;
+	}
+}
+
+static void				show_tiny()
+{
+	t_tiny			*tiny;
+	int				i;
+
+	i = 0;
+	if (g_mapping == NULL || g_mapping->tiny == NULL)
+		return ;
+	tiny = g_mapping->tiny;
+	while (tiny != NULL)
+	{
+		ft_putstr("TINY : ");
+		print_adress((void*)tiny->zone_adr);
+		ft_putstr("\n");
+		while (i < TINY_TAB_SIZE)
+		{
+			if (tiny->tab[0][i])
+			{
+				print_adress((void*)tiny->zone_adr + (i * TINY));
+				ft_putstr(" - ");
+				print_adress((void*)tiny->zone_adr + (i * TINY) + tiny->tab[1][i] - 1);
+				ft_putstr(" : ");
+				ft_putnbr((int)tiny->tab[1][i]);
+				ft_putstr(" octets\n");
+			}
+			i++;
+		}
+		tiny = tiny->next;
+	}
+}
+void				show_alloc_mem()
+{
+	show_tiny();
+	show_small();
+	show_large();
+}
