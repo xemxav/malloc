@@ -13,52 +13,21 @@
 
 #include "../includes/malloc.h"
 
-static size_t		basecount(unsigned long long int n, int base)
+static void				print_start(char *str, void *adr)
 {
-	size_t			count;
-
-	count = 0;
-	if (n == 0)
-		return (1);
-	while (n > 0)
-	{
-		n /= base;
-		count++;
-	}
-	return (count);
-}
-
-void				print_adress(void *adrr)
-{
-	char			*ref;
-	size_t			len_adrr;
-	char			str[20];
-	unsigned long	ul_ad;
-
-	ul_ad = (unsigned long)adrr;
-	ref = "0123456789abcdef\0";
-	len_adrr = basecount(ul_ad, 16) - 1;
-	ft_putstr("0x");
-	str[len_adrr + 1] = '\0';
-	while ((int)len_adrr >= 0)
-	{
-		str[(int)len_adrr] = ref[ul_ad % 16];
-		ul_ad = ul_ad / 16;
-		len_adrr--;
-	}
 	ft_putstr(str);
+	print_adress(adr);
+	ft_putstr("\n");
 }
 
-static void				show_large()
+static void				show_large(void)
 {
-	t_large			*large;
-	int				i;
+	t_large				*large;
+	int					i;
 
 	i = 0;
-	if (g_mapping == NULL || g_mapping->large == NULL)
-		return ;
 	large = g_mapping->large;
-	while(large != NULL)
+	while (large != NULL)
 	{
 		ft_putstr("LARGE : ");
 		print_adress((void*)large->zone_adr);
@@ -73,27 +42,24 @@ static void				show_large()
 	}
 }
 
-static void				show_small()
+static void				show_small(void)
 {
-	t_small			*small;
-	int				i;
+	t_small				*small;
+	int					i;
 
 	i = 0;
-	if (g_mapping == NULL || g_mapping->small == NULL)
-		return ;
 	small = g_mapping->small;
 	while (small != NULL)
 	{
-		ft_putstr("SMALL : ");
-		print_adress((void*)small->zone_adr);
-		ft_putstr("\n");
+		print_start("SMALL : ", (void)small->zone_adr);
 		while (i < TINY_TAB_SIZE)
 		{
 			if (small->tab[0][i] == 1)
 			{
 				print_adress((void*)small->zone_adr + (i * SMALL));
 				ft_putstr(" - ");
-				print_adress((void*)small->zone_adr + (i * SMALL) + small->tab[1][i] - 1);
+				print_adress((void*)small->zone_adr +
+				(i * SMALL) + small->tab[1][i] - 1);
 				ft_putstr(" : ");
 				ft_putnbr(small->tab[1][i]);
 				ft_putstr(" octets\n");
@@ -104,27 +70,24 @@ static void				show_small()
 	}
 }
 
-static void				show_tiny()
+static void				show_tiny(void)
 {
-	t_tiny			*tiny;
-	int				i;
+	t_tiny				*tiny;
+	int					i;
 
 	i = 0;
-	if (g_mapping == NULL || g_mapping->tiny == NULL)
-		return ;
 	tiny = g_mapping->tiny;
 	while (tiny != NULL)
 	{
-		ft_putstr("TINY : ");
-		print_adress((void*)tiny->zone_adr);
-		ft_putstr("\n");
+		print_start("TINY : ", (void)small->zone_adr);
 		while (i < TINY_TAB_SIZE)
 		{
 			if (tiny->tab[0][i])
 			{
 				print_adress((void*)tiny->zone_adr + (i * TINY));
 				ft_putstr(" - ");
-				print_adress((void*)tiny->zone_adr + (i * TINY) + tiny->tab[1][i] - 1);
+				print_adress((void*)tiny->zone_adr +
+				(i * TINY) + tiny->tab[1][i] - 1);
 				ft_putstr(" : ");
 				ft_putnbr((int)tiny->tab[1][i]);
 				ft_putstr(" octets\n");
@@ -134,11 +97,15 @@ static void				show_tiny()
 		tiny = tiny->next;
 	}
 }
-void				show_alloc_mem()
+
+void					show_alloc_mem(void)
 {
-	show_tiny();
-	show_small();
-	show_large();
+	if (g_mapping == NULL || g_mapping->tiny == NULL)
+		show_tiny();
+	if (g_mapping == NULL || g_mapping->small == NULL)
+		show_small();
+	if (g_mapping == NULL || g_mapping->large == NULL)
+		show_large();
 	ft_putstr("Total : ");
 	ft_putnbr(g_mapping->nb_allocated);
 	ft_putstr(" octets\n");

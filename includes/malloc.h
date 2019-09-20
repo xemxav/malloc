@@ -26,16 +26,14 @@
 # define LARGE 513
 # define TINY_PAGE_SIZE (1 * getpagesize())
 # define SMALL_PAGE_SIZE (12 * getpagesize())
-
-
-#define TINY_TAB_SIZE (getpagesize() / TINY)
-#define SMALL_TAB_SIZE ((SMALL * 100) / getpagesize())
+# define TINY_TAB_SIZE (getpagesize() / TINY)
+# define SMALL_TAB_SIZE ((SMALL * 100) / getpagesize())
 
 typedef struct			s_tiny
 {
 	void				*zone_adr;
 	int					**tab;
-	int 				nb_alloc;
+	int					nb_alloc;
 	struct s_tiny		*next;
 }						t_tiny;
 
@@ -43,11 +41,11 @@ typedef struct			s_small
 {
 	void				*zone_adr;
 	int					**tab;
-	int 				nb_alloc;
+	int					nb_alloc;
 	struct s_small		*next;
 }						t_small;
 
-typedef struct 			s_large
+typedef struct			s_large
 {
 	void				*zone_adr;
 	size_t				size;
@@ -93,15 +91,12 @@ t_large					*init_large(size_t size);
 t_small					*init_small();
 t_tiny					*init_tiny();
 /*
-**		ALLOCATIONS.C
-*/
-//t_alloc				*make_new_alloc(size_t size, t_zone *current_zone);
-//void				retrieve_alloc_from_ptr(t_info *info);
-
-/*
 **		SHOw_ALLOC_MEM.C
 */
 void					show_alloc_mem();
+/*
+**		PRINT_ADRESS.C
+*/
 void					print_adress(void *adrr);
 /*
 **		SHOw_ALLOC_MEM_EX.C
@@ -110,6 +105,6 @@ void					show_alloc_mem_ex(void *zone, size_t size);
 /*
 **		FREE.C
 */
-void    				ft_free(void *ptr);
+void					ft_free(void *ptr);
 
 #endif

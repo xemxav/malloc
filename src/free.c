@@ -65,9 +65,9 @@ static int		find_in_large(void *ptr)
 void			ft_free(void *ptr)
 {
 	if (find_in_tiny(ptr) == 1)
-		return;
+		return ;
 	if (find_in_small(ptr) == 1)
-		return;
+		return ;
 	if (find_in_large(ptr) == 1)
-		return;
+		return ;
 }

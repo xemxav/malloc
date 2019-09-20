@@ -11,7 +11,6 @@
 /*                                                        /                   */
 /* ************************************************************************** */
 
-
 #include "../includes/malloc.h"
 
 int				find_in_tiny(void *ptr)
@@ -49,7 +48,7 @@ void			*get_tiny_ptr(t_tiny *tiny, size_t size)
 
 	i = 0;
 	new_ptr = NULL;
-	while(i < TINY_TAB_SIZE)
+	while (i < TINY_TAB_SIZE)
 	{
 		if (tiny->tab[0][i] == 0)
 		{
@@ -57,7 +56,7 @@ void			*get_tiny_ptr(t_tiny *tiny, size_t size)
 			tiny->tab[0][i] = 1;
 			tiny->nb_alloc += 1;
 			g_mapping->nb_allocated += (unsigned long long)size;
-			return ((void *) tiny->zone_adr + (i * TINY));
+			return ((void *)tiny->zone_adr + (i * TINY));
 		}
 		i++;
 	}
