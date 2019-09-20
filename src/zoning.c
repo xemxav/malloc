@@ -45,7 +45,8 @@ int			**init_tab(int tab_size)
 	PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
 	if (tab[0] == MAP_FAILED || tab[1] == MAP_FAILED)
 		return (NULL);
-	printf("init_tab\n");
+	ft_bzero(tab[0],tab_size);
+	ft_bzero(tab[1],tab_size);
 	return (tab);
 }
 
@@ -67,7 +68,7 @@ t_large				*init_large(size_t size)
 		tmp = g_mapping->large;
 		while(tmp->next != NULL)
 			tmp = tmp->next;
-		tmp->next = NULL;
+		tmp->next = large;
 	}
 	large->zone_adr = (void*)mmap(0, size, PROT_READ
 	| PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
@@ -94,7 +95,7 @@ t_small		*init_small()
 		tmp = g_mapping->small;
 		while(tmp->next != NULL)
 			tmp = tmp->next;
-		tmp->next = NULL;
+		tmp->next = small;
 	}
 	small->zone_adr = (void*)mmap(0, SMALL_PAGE_SIZE,PROT_READ
 	| PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
@@ -124,7 +125,7 @@ t_tiny		*init_tiny()
 		tmp = g_mapping->tiny;
 		while(tmp->next != NULL)
 			tmp = tmp->next;
-		tmp->next = NULL;
+		tmp->next = tiny;
 	}
 	tiny->zone_adr = (void*)mmap(0, TINY_PAGE_SIZE,PROT_READ
 	| PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
@@ -132,6 +133,5 @@ t_tiny		*init_tiny()
 		return (NULL);
 	if ((tiny->tab = init_tab(TINY_TAB_SIZE)) == NULL)
 		return (NULL);
-	printf("init_tiny\n");
 	return (tiny);
 }

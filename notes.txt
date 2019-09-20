@@ -42,3 +42,14 @@ void *mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset);
     se renseigner sur les algo de "rangement " ?
 
     TROUVER UN MOYEN DE TOUT FREE SI LE PROGRAMME s'ARRETTE
+
+
+    RLIMIT_AS
+    Taille maximum de la mémoire virtuelle du processus en octets.
+    Cette limite affecte les appels à brk(2), mmap(2) et mremap(2), qui échouent
+    avec l'erreur ENOMEM en cas de dépassement de cette limite. De même,
+    l'extension de la pile automatique échouera (et générera un SIGSEGV qui tuera
+    le processus si aucune pile alternative n'a été définie par un appel
+    à sigaltstack(2)). Depuis que cette valeur est de type long, sur les machines
+    où le type long est sur 32 bits, soit cette limite est au plus 2 GiB,
+    soit cette ressource est illimitée.

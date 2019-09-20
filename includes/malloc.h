@@ -73,6 +73,13 @@ void				*ft_malloc(size_t size);
 */
 void				*get_tiny_ptr(t_tiny *tiny, size_t size);
 void				*get_tiny_zone(size_t size);
+int					find_in_tiny(void *ptr);
+/*
+**		SMALL.C
+*/
+void				*get_small_ptr(t_small *small, size_t size);
+void				*get_small_zone(size_t size);
+int					find_in_small(void *ptr);
 /*
 **		REALLOC.C
 */
@@ -102,7 +109,6 @@ void				show_alloc_mem_ex(void *zone, size_t size);
 /*
 **		FREE.C
 */
-//void    			ft_free(void *ptr);
-//void				delete_alloc(t_info *info);
+void    			ft_free(void *ptr);
 
 #endif

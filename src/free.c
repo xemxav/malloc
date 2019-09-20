@@ -11,12 +11,61 @@
 /*                                                        /                   */
 /* ************************************************************************** */
 
+#include "../includes/malloc.h"
 
-//#include "../includes/malloc.h"
-//
-//
-//
-//void	ft_free(void *ptr)
-//{
-//
-//}
+static int		find_in_large_2(void *ptr, t_large *tmp)
+{
+	t_large		*before;
+
+	before = tmp;
+	tmp = tmp->next;
+	while (tmp != NULL)
+	{
+		if (tmp->zone_adr == ptr)
+		{
+			if (munmap(tmp->zone_adr, tmp->size) == -1)
+				printf("fail de munmap de la large allouée");
+			before->next = tmp->next;
+			if (munmap(tmp, sizeof(t_large)) == -1)
+				printf("fail de munmap de la structure large");
+			return (1);
+		}
+		before = tmp;
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
+static int		find_in_large(void *ptr)
+{
+	t_large		*tmp;
+
+	tmp = NULL;
+	if (g_mapping->large == NULL)
+		return (0);
+	tmp = g_mapping->large;
+	if (tmp->zone_adr == ptr)
+	{
+		if (munmap(tmp->zone_adr, tmp->size) == -1)
+			printf("fail de munmap de la large allouée");
+		if (tmp->next == NULL)
+			g_mapping->large = NULL;
+		else
+			g_mapping->large = tmp->next;
+		if (munmap(tmp, sizeof(t_large)) == -1)
+			printf("fail de munmap de la structure large");
+		return (1);
+	}
+	return (find_in_large_2(ptr, tmp));
+}
+
+//todo : il faut que le ptr de retour soit egale a 0x0;
+void			ft_free(void *ptr)
+{
+	if (find_in_tiny(ptr) == 1)
+		return;
+	if (find_in_small(ptr) == 1)
+		return;
+	if (find_in_large(ptr) == 1)
+		return;
+}

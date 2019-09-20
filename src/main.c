@@ -8,36 +8,27 @@ int		main()
 {
 	char	*ptr_test;
 	char	*ptr_test2;
-	t_tiny	*truc;
-
-
+	int i = 0;
 	ptr_test = ft_malloc(sizeof(char) * 8);
-	printf("passe malloc\n");
 	if (ptr_test == NULL)
-		ft_putstr("c'est fini 1\n");
-	ft_memcpy((void*)ptr_test, "1234567\0", sizeof(char) * 8);
-	printf("passe memcopy\n");
-	truc = g_mapping->tiny;
-	show_alloc_mem_ex((void*)(truc->zone_adr), 100);
-	ptr_test2 = ft_malloc(sizeof(char) * 5);
-	ft_memcpy((void*)ptr_test2, "AAAA\0", sizeof(char) * 5);
-	if (ptr_test2 == NULL)
-		ft_putstr("c'est fini 2\n");
-	show_alloc_mem_ex((void*)truc->zone_adr, 100);
-//	show_alloc_mem_ex((void*)g_mapping->small->zone_adr, 100);
-//	ft_free(ptr_test);
-//	printf("apres free\n");
-//	show_alloc_mem_ex((void*)g_zone, 100);
-//	ptr_test = ft_malloc(sizeof(char) * 5);
-//	ft_memcpy((void*)ptr_test, "1234\0", sizeof(char) * 5);
-//	printf("apres nouveau malloc\n");
-//	show_alloc_mem_ex((void*)g_zone, 100);
-//	printf("\n\n");
-
+		printf("ptr_test est NULL");
+	ft_memcpy((void*)ptr_test, "1234567\0", 8);
+	printf("tiny ptr_test = %s\n", ptr_test);
+	ptr_test2 = ft_malloc(sizeof(char) * 256);
+	if (ptr_test == NULL)
+		printf("ptr_test est NULL");
+	while (i < 256)
+	{	ptr_test2[i] = 'A';
+		i++;
+	}
+	ptr_test2[i] = '\0';
 	show_alloc_mem();
-
+	show_alloc_mem_ex((void*)ptr_test, 100);
+	ft_free(ptr_test);
+	show_alloc_mem();
+	ft_free(ptr_test2);
 	printf("\n\n");
-
+	show_alloc_mem();
 	ft_putstr("ptr_test 1:");
 	print_adress((void*)ptr_test);
 	ft_putstr("\nptr_test 2:");

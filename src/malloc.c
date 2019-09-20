@@ -15,13 +15,19 @@
 
 static void		*get_ptr(size_t size)
 {
-	printf("get_ptr\n");
+	t_large		*new_large;
+
+	new_large = NULL;
 	if (size <= TINY)
 		return (get_tiny_zone(size));
 	if (size <= SMALL)
-		return (get_tiny_zone(size));
+		return (get_small_zone(size));
 	if (size >= LARGE)
-		return (get_tiny_zone(size));
+	{
+		new_large = init_large(size);
+		new_large->size = size;
+		return (new_large->zone_adr);
+	}
 	return (NULL);
 }
 
