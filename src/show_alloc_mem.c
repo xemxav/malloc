@@ -51,7 +51,7 @@ static void				show_small(void)
 	small = g_mapping->small;
 	while (small != NULL)
 	{
-		print_start("SMALL : ", (void)small->zone_adr);
+		print_start("SMALL : ", (void*)small->zone_adr);
 		while (i < TINY_TAB_SIZE)
 		{
 			if (small->tab[0][i] == 1)
@@ -79,7 +79,7 @@ static void				show_tiny(void)
 	tiny = g_mapping->tiny;
 	while (tiny != NULL)
 	{
-		print_start("TINY : ", (void)small->zone_adr);
+		print_start("TINY : ", (void*)tiny->zone_adr);
 		while (i < TINY_TAB_SIZE)
 		{
 			if (tiny->tab[0][i])
@@ -100,11 +100,11 @@ static void				show_tiny(void)
 
 void					show_alloc_mem(void)
 {
-	if (g_mapping == NULL || g_mapping->tiny == NULL)
+	if (g_mapping != NULL && g_mapping->tiny != NULL)
 		show_tiny();
-	if (g_mapping == NULL || g_mapping->small == NULL)
+	if (g_mapping != NULL && g_mapping->small != NULL)
 		show_small();
-	if (g_mapping == NULL || g_mapping->large == NULL)
+	if (g_mapping != NULL && g_mapping->large != NULL)
 		show_large();
 	ft_putstr("Total : ");
 	ft_putnbr(g_mapping->nb_allocated);
