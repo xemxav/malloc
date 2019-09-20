@@ -139,4 +139,7 @@ void				show_alloc_mem()
 	show_tiny();
 	show_small();
 	show_large();
+	ft_putstr("Total : ");
+	ft_putnbr(g_mapping->nb_allocated);
+	ft_putstr(" octets\n");
 }

@@ -31,6 +31,7 @@ int				find_in_tiny(void *ptr)
 			i = (int)(((unsigned long)ptr - (unsigned long)tmp->zone_adr)
 					/ (unsigned long)TINY);
 			tmp->nb_alloc--;
+			g_mapping->nb_allocated -= (unsigned long long)tmp->tab[1][i];
 			ft_bzero(ptr, tmp->tab[1][i]);
 			tmp->tab[0][i] = 0;
 			tmp->tab[1][i] = 0;
@@ -55,6 +56,7 @@ void			*get_tiny_ptr(t_tiny *tiny, size_t size)
 			tiny->tab[1][i] = (int)size;
 			tiny->tab[0][i] = 1;
 			tiny->nb_alloc += 1;
+			g_mapping->nb_allocated += (unsigned long long)size;
 			return ((void *) tiny->zone_adr + (i * TINY));
 		}
 		i++;

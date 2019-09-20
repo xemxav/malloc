@@ -26,6 +26,7 @@ static int		find_in_large_2(void *ptr, t_large *tmp)
 			if (munmap(tmp->zone_adr, tmp->size) == -1)
 				printf("fail de munmap de la large allouée");
 			before->next = tmp->next;
+			g_mapping->nb_allocated -= (unsigned long long)tmp->size;
 			if (munmap(tmp, sizeof(t_large)) == -1)
 				printf("fail de munmap de la structure large");
 			return (1);
@@ -52,6 +53,7 @@ static int		find_in_large(void *ptr)
 			g_mapping->large = NULL;
 		else
 			g_mapping->large = tmp->next;
+		g_mapping->nb_allocated -= (unsigned long long)tmp->size;
 		if (munmap(tmp, sizeof(t_large)) == -1)
 			printf("fail de munmap de la structure large");
 		return (1);

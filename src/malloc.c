@@ -26,6 +26,7 @@ static void		*get_ptr(size_t size)
 	{
 		new_large = init_large(size);
 		new_large->size = size;
+		g_mapping->nb_allocated += (unsigned long long)size;
 		return (new_large->zone_adr);
 	}
 	return (NULL);

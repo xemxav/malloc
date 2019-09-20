@@ -30,6 +30,7 @@ int				find_in_small(void *ptr)
 			i =(int)(((unsigned long)ptr - (unsigned long)tmp->zone_adr)
 					/ (unsigned long)SMALL);
 			tmp->nb_alloc--;
+			g_mapping->nb_allocated -= (unsigned long long)tmp->tab[1][i];
 			ft_bzero(ptr, tmp->tab[1][i]);
 			tmp->tab[0][i] = 0;
 			tmp->tab[1][i] = 0;
@@ -52,6 +53,7 @@ void			*get_small_ptr(t_small *small, size_t size)
 		if (small->tab[0][i] == 0)
 		{
 			small->tab[1][i] = (int)size;
+			g_mapping->nb_allocated += (unsigned long long)size;
 			small->tab[0][i] = 1;
 			small->nb_alloc += 1;
 			return ((void *) small->zone_adr + (i * SMALL));
