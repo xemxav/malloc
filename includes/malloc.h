@@ -91,7 +91,7 @@ int						find_in_small(t_info *info);
 /*
 **		REALLOC.C
 */
-//void    			*ft_realloc(void *ptr, size_t size);
+void    				*ft_realloc(void *ptr, size_t size);
 /*
 ** 		ZONING.C
 */
@@ -115,11 +115,13 @@ void					show_alloc_mem_ex(void *zone, size_t size);
 **		FREE.C
 */
 void					ft_free(void *ptr);
+int 					find_in_large(t_info *info);
 /*
 **		DELETING.C
 */
 void					delete_tiny_zone(t_info	*info);
 void					delete_small_zone(t_info *info);
+void					delete_large_zone(t_info *info);
 void					delete_ptr(t_info *info);
 
 #endif

@@ -13,6 +13,25 @@
 
 #include "../includes/malloc.h"
 
+void			delete_large_zone(t_info *info)
+{
+	t_large		*tmp;
+
+	if (info->large == g_mapping->large && info->large->next == NULL)
+		g_mapping->large = NULL;
+	tmp = g_mapping->large;
+	while (tmp->next != NULL && tmp->next != info->large)
+		tmp = tmp->next;
+	if (info->large->next == NULL)
+		tmp->next = NULL;
+	else
+		tmp->next = info->large->next;
+	if (munmap(info->large->zone_adr, info->large->size) == -1)
+		printf("fail de munmap de la large allouée");
+	if (munmap(info->large, sizeof(t_large)) == -1)
+		printf("fail de munmap de la structure large");
+}
+
 void			delete_tiny_zone(t_info	*info)
 {
 	t_tiny		*before;
@@ -78,6 +97,11 @@ void			delete_ptr(t_info	*info)
 		info->small->tab[0][info->index] = 0;
 		info->small->tab[1][info->index] = 0;
 		delete_small_zone(info);
+	}
+	if (info->large != NULL)
+	{
+		g_mapping->nb_allocated -= info->large->size;
+		delete_large_zone(info);
 	}
 	info->ptr = NULL;
 }
