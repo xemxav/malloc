@@ -12,8 +12,8 @@ PATH_INC = ./includes/
 #                              MALLOC TEST                                  #
 #******************************************************************************#
 
-FILES = main malloc free zoning tiny small show_alloc_mem show_alloc_mem_ex \
-print_adress
+FILES = main malloc free realloc zoning tiny small show_alloc_mem show_alloc_mem_ex \
+print_adress deleting
 
 
 OBJ = $(addprefix $(PATH_OBJ), $(addsuffix .o , $(FILES)))

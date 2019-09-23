@@ -13,26 +13,7 @@
 
 #include "../includes/malloc.h"
 
-static void		delete_small_zone(t_small *small)
-{
-	t_small		*before;
-
-	before = NULL;
-	if (small->nb_alloc != 0)
-		return ;
-	if (g_mapping->small == small && small->next == NULL)
-		return ;
-	before = g_mapping->small;
-	while (before->next != NULL && before->next != small)
-		before = before->next;
-	before->next = small->next;
-	if (munmap(small->zone_adr, SMALL_TAB_SIZE) == -1)
-		ft_putstr("fail de munmap de la small allouée\n");
-	if (munmap(small, sizeof(t_small)) == -1)
-		ft_putstr("fail de munmap de la structure small\n");
-}
-
-int				find_in_small(void *ptr)
+int				find_in_small(t_info *info)
 {
 	t_small		*tmp;
 	int			i;
@@ -43,17 +24,12 @@ int				find_in_small(void *ptr)
 	tmp = g_mapping->small;
 	while (tmp != NULL)
 	{
-		if (ptr <= tmp->zone_adr + (SMALL_PAGE_SIZE) &&
-			ptr >= tmp->zone_adr)
+		if (info->ptr <= tmp->zone_adr + (SMALL_PAGE_SIZE) &&
+			info->ptr >= tmp->zone_adr)
 		{
-			i = (int)(((unsigned long)ptr - (unsigned long)tmp->zone_adr)
-					/ (unsigned long)SMALL);
-			tmp->nb_alloc--;
-			g_mapping->nb_allocated -= (unsigned long long)tmp->tab[1][i];
-			ft_bzero(ptr, tmp->tab[1][i]);
-			tmp->tab[0][i] = 0;
-			tmp->tab[1][i] = 0;
-			delete_small_zone(tmp);
+			info->index = (int)(((unsigned long)info->ptr -
+					(unsigned long)tmp->zone_adr) / (unsigned long)SMALL);
+			info->small = tmp;
 			return (1);
 		}
 		tmp = tmp->next;

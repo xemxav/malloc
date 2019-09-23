@@ -62,6 +62,15 @@ typedef struct			s_mapping
 
 extern t_mapping		*g_mapping;
 
+typedef struct			s_info
+{
+	struct s_tiny		*tiny;
+	struct s_small		*small;
+	struct s_large		*large;
+	void				*ptr;
+	int 				index;
+}						t_info;
+
 /*
 **		MALLOC.C
 */
@@ -72,13 +81,13 @@ void					*ft_malloc(size_t size);
 */
 void					*get_tiny_ptr(t_tiny *tiny, size_t size);
 void					*get_tiny_zone(size_t size);
-int						find_in_tiny(void *ptr);
+int						find_in_tiny(t_info *info);
 /*
 **		SMALL.C
 */
 void					*get_small_ptr(t_small *small, size_t size);
 void					*get_small_zone(size_t size);
-int						find_in_small(void *ptr);
+int						find_in_small(t_info *info);
 /*
 **		REALLOC.C
 */
@@ -86,14 +95,14 @@ int						find_in_small(void *ptr);
 /*
 ** 		ZONING.C
 */
-t_mapping				*init_mapping();
+t_mapping				*init_mapping(void);
 t_large					*init_large(size_t size);
-t_small					*init_small();
-t_tiny					*init_tiny();
+t_small					*init_small(void);
+t_tiny					*init_tiny(void);
 /*
 **		SHOw_ALLOC_MEM.C
 */
-void					show_alloc_mem();
+void					show_alloc_mem(void);
 /*
 **		PRINT_ADRESS.C
 */
@@ -106,5 +115,11 @@ void					show_alloc_mem_ex(void *zone, size_t size);
 **		FREE.C
 */
 void					ft_free(void *ptr);
+/*
+**		DELETING.C
+*/
+void					delete_tiny_zone(t_info	*info);
+void					delete_small_zone(t_info *info);
+void					delete_ptr(t_info *info);
 
 #endif

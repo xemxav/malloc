@@ -64,10 +64,15 @@ static int		find_in_large(void *ptr)
 //todo : il faut que le ptr de retour soit egale a 0x0;
 void			ft_free(void *ptr)
 {
-	if (find_in_tiny(ptr) == 1)
+	t_info		info;
+
+	ft_bzero((void*)&info, sizeof(t_info));
+	info.ptr = ptr;
+	if (find_in_tiny(&info) == 1 || find_in_small(&info) == 1)
+	{
+		delete_ptr(&info);
 		return ;
-	if (find_in_small(ptr) == 1)
-		return ;
+	}
 	if (find_in_large(ptr) == 1)
 		return ;
 }

@@ -13,7 +13,7 @@
 
 #include "../includes/malloc.h"
 
-int				find_in_tiny(void *ptr)
+int				find_in_tiny(t_info *info)
 {
 	t_tiny			*tmp;
 	int				i;
@@ -24,16 +24,12 @@ int				find_in_tiny(void *ptr)
 	tmp = g_mapping->tiny;
 	while (tmp != NULL)
 	{
-		if (ptr <= (void*)tmp->zone_adr + TINY_PAGE_SIZE &&
-			ptr >= (void*)tmp->zone_adr)
+		if (info->ptr <= (void*)tmp->zone_adr + TINY_PAGE_SIZE &&
+			info->ptr >= (void*)tmp->zone_adr)
 		{
-			i = (int)(((unsigned long)ptr - (unsigned long)tmp->zone_adr)
-					/ (unsigned long)TINY);
-			tmp->nb_alloc--;
-			g_mapping->nb_allocated -= (unsigned long long)tmp->tab[1][i];
-			ft_bzero(ptr, tmp->tab[1][i]);
-			tmp->tab[0][i] = 0;
-			tmp->tab[1][i] = 0;
+			info->index = (int)(((unsigned long)info->ptr -
+					(unsigned long)tmp->zone_adr) / (unsigned long)TINY);
+			info->tiny = tmp;
 			return (1);
 		}
 		tmp = tmp->next;
