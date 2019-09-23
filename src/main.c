@@ -22,6 +22,7 @@ int		main()
 		i++;
 	}
 	ptr_test2[i] = '\0';
+	ft_realloc(ptr_test2, sizeof(char) * 514);
 	show_alloc_mem();
 	show_alloc_mem_ex((void*)ptr_test, 100);
 	ft_free(ptr_test);
