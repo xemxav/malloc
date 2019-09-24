@@ -3,7 +3,11 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
-NAME = malloc_test
+ifeq ($(HOSTTYPE),)
+    		HOSTTYPE := $(shell uname -m)_$(shell uname -s)
+endif
+
+NAME = libft_malloc_$(HOSTTYPE).so
 PATH_OBJ = ./obj/
 PATH_SRC = ./src/
 PATH_INC = ./includes/
@@ -60,4 +64,4 @@ $(PATH_OBJ)%.o: $(PATH_SRC)%.c $(HEADERS)
 	@$(CC) $(CFLAGS) -I $(PATH_INC) -I $(PATH_INC_LIB) -c $< -o $@
 
 $(PATH_OBJ):
-	@mkdir $(PATH_OBJ)
+	@mkdir -p $(PATH_OBJ)

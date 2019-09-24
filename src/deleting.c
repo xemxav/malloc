@@ -19,13 +19,16 @@ void			delete_large_zone(t_info *info)
 
 	if (info->large == g_mapping->large && info->large->next == NULL)
 		g_mapping->large = NULL;
-	tmp = g_mapping->large;
-	while (tmp->next != NULL && tmp->next != info->large)
-		tmp = tmp->next;
-	if (info->large->next == NULL)
-		tmp->next = NULL;
 	else
+	{
+		tmp = g_mapping->large;
+		while (tmp->next != NULL && tmp->next != info->large)
+		tmp = tmp->next;
+		if (info->large->next == NULL)
+			tmp->next = NULL;
+		else
 		tmp->next = info->large->next;
+	}
 	if (munmap(info->large->zone_adr, info->large->size) == -1)
 		printf("fail de munmap de la large allouée");
 	if (munmap(info->large, sizeof(t_large)) == -1)

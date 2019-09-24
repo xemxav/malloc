@@ -39,12 +39,13 @@ int 		find_in_large(t_info *info)
 void			ft_free(void *ptr)
 {
 	t_info		info;
-
+	if (g_mapping == NULL)
+		return ;
 	ft_bzero((void*)&info, sizeof(t_info));
 	info.ptr = ptr;
 	if (find_in_tiny(&info) == 1 || find_in_small(&info) == 1
 		|| find_in_large(&info) == 1)
 		delete_ptr(&info);
-	ptr = NULL;
+//	ptr = NULL;
 	return;
 }

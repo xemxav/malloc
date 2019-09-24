@@ -40,8 +40,17 @@ void *mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset);
     où le type long est sur 32 bits, soit cette limite est au plus 2 GiB,
     soit cette ressource est illimitée.
 
-    Test à faire :
+Test à faire :
 
-    Malloc > RLIMIT_AS
-    Realloc > RLIMIT_AS
+Malloc > RLIMIT_AS -> il faut que RLIMIT soit checké avant l'init de pages.
+faire une fonction pour allouer moins de page pour que ca rentre si l'alloc de nouvelle page
+ferai sauter le truc ??
+Realloc > RLIMIT_AS
 
+realloc :
+ptr = NULL -> doit faire un malloc
+si ptr pas managé -> undefined behavior
+realloc(NULL, 0) == malloc(0)
+
+malloc(0) -> returns NULL or a unique pointer that can be later be free
+mais msvc -> pas de NULL pointer

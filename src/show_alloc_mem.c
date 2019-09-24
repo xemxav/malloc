@@ -23,9 +23,7 @@ static void				print_start(char *str, void *adr)
 static void				show_large(void)
 {
 	t_large				*large;
-	int					i;
 
-	i = 0;
 	large = g_mapping->large;
 	while (large != NULL)
 	{
@@ -47,10 +45,11 @@ static void				show_small(void)
 	t_small				*small;
 	int					i;
 
-	i = 0;
+
 	small = g_mapping->small;
 	while (small != NULL)
 	{
+		i = 0;
 		print_start("SMALL : ", (void*)small->zone_adr);
 		while (i < TINY_TAB_SIZE)
 		{
@@ -75,11 +74,12 @@ static void				show_tiny(void)
 	t_tiny				*tiny;
 	int					i;
 
-	i = 0;
+
 	tiny = g_mapping->tiny;
 	while (tiny != NULL)
 	{
 		print_start("TINY : ", (void*)tiny->zone_adr);
+		i = 0;
 		while (i < TINY_TAB_SIZE)
 		{
 			if (tiny->tab[0][i])

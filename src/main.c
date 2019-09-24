@@ -4,13 +4,31 @@
 
 #include "../includes/malloc.h"
 
+#define TEST 15
+
 int         main()
 {
-    int i;
+	int		i;
+	char 	*ptr;
 
-    i = 0;
+	i = 0;
+	ptr = NULL;
+//	while (i < 300)
+//	{
+//		ft_malloc(15);
+//		total += 15;
+//		ft_malloc(400);
+//		total += 400;
+//		ft_malloc(513);
+//		total += 513;
+//		i++;
+//	}
+	ptr = ft_malloc(TEST);
+	ptr = ft_realloc(ptr, TEST+56);
+	ft_free(ptr);
 
-    return (0);
+	show_alloc_mem();
+
 }
 
 //int		main()

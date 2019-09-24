@@ -13,7 +13,7 @@
 
 #include "../includes/malloc.h"
 
-static void		*get_ptr(size_t size)
+void			*ft_malloc(size_t size)
 {
 	t_large		*new_large;
 
@@ -24,21 +24,12 @@ static void		*get_ptr(size_t size)
 		return (get_small_zone(size));
 	if (size >= LARGE)
 	{
+		if (g_mapping == NULL)
+			init_mapping();
 		new_large = init_large(size);
 		new_large->size = size;
 		g_mapping->nb_allocated += (unsigned long long)size;
 		return (new_large->zone_adr);
 	}
 	return (NULL);
-}
-
-void			*ft_malloc(size_t size)
-{
-	void		*new_ptr;
-
-	new_ptr = NULL;
-	if (size <= 0)
-		return (new_ptr);
-	new_ptr = get_ptr(size);
-	return (new_ptr);
 }

@@ -55,7 +55,9 @@ void    				*ft_realloc(void *ptr, size_t size)
 {
 	t_info				info;
 
-	if (ptr == NULL && size > 0)
+	if (g_mapping == NULL)
+		return (ft_malloc(size));
+	if (ptr == NULL)
 		return ft_malloc(size);
 	ft_bzero((void*)&info, sizeof(t_info));
 	info.ptr = ptr;
