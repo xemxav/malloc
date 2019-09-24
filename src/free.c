@@ -36,7 +36,7 @@ int 		find_in_large(t_info *info)
 }
 
 //todo : il faut que le ptr de retour soit egale a 0x0;
-void			ft_free(void *ptr)
+void			free(void *ptr)
 {
 	t_info		info;
 	if (g_mapping == NULL)

@@ -19,7 +19,7 @@ static void				*create_new_ptr(t_info *info, size_t size)
 	size_t 				size_copy;
 
 	size_copy = (int)size;
-	if ((new_ptr = ft_malloc(size)) == NULL)
+	if ((new_ptr = malloc(size)) == NULL)
 		return (NULL);
 	if (info->tiny != NULL && (int)size_copy > info->tiny->tab[1][info->index])
 		size_copy = info->tiny->tab[1][info->index];
@@ -51,14 +51,14 @@ static void				*reallocate_tiny_small(t_info *info, size_t size)
 	return (info->ptr);
 }
 
-void    				*ft_realloc(void *ptr, size_t size)
+void    				*realloc(void *ptr, size_t size)
 {
 	t_info				info;
 
 	if (g_mapping == NULL)
-		return (ft_malloc(size));
+		return (malloc(size));
 	if (ptr == NULL)
-		return ft_malloc(size);
+		return malloc(size);
 	ft_bzero((void*)&info, sizeof(t_info));
 	info.ptr = ptr;
 	if (find_in_tiny(&info) == 1)

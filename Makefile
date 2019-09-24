@@ -7,7 +7,7 @@ ifeq ($(HOSTTYPE),)
     		HOSTTYPE := $(shell uname -m)_$(shell uname -s)
 endif
 
-NAME = libft_malloc_$(HOSTTYPE).so
+NAME = libmalloc_$(HOSTTYPE).so
 PATH_OBJ = ./obj/
 PATH_SRC = ./src/
 PATH_INC = ./includes/
@@ -16,7 +16,7 @@ PATH_INC = ./includes/
 #                              MALLOC TEST                                  #
 #******************************************************************************#
 
-FILES = main malloc free realloc zoning tiny small show_alloc_mem show_alloc_mem_ex \
+FILES = malloc free realloc zoning tiny small show_alloc_mem show_alloc_mem_ex \
 print_adress deleting
 
 
@@ -57,7 +57,7 @@ re: fclean all
 
 $(NAME): $(PATH_OBJ) $(OBJ)
 	@make -C $(PATH_LIB)
-	@$(CC) $(CFLAGS) $(OBJ) -I $(PATH_INC) $(INC_LIB) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJ) -I $(PATH_INC) $(INC_LIB) -shared -o $(NAME)
 	@echo "$(NAME) has been compiled"
 
 $(PATH_OBJ)%.o: $(PATH_SRC)%.c $(HEADERS)
