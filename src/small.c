@@ -16,15 +16,13 @@
 int				find_in_small(t_info *info)
 {
 	t_small		*tmp;
-	int			i;
 
-	i = 0;
 	if (g_mapping->small == NULL)
 		return (0);
 	tmp = g_mapping->small;
 	while (tmp != NULL)
 	{
-		if (info->ptr <= tmp->zone_adr + (SMALL_PAGE_SIZE) &&
+		if (info->ptr <= tmp->zone_adr + SMALL_PAGE_SIZE &&
 			info->ptr >= tmp->zone_adr)
 		{
 			info->index = (int)(((unsigned long)info->ptr -

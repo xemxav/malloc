@@ -55,6 +55,7 @@ void    				*realloc(void *ptr, size_t size)
 {
 	t_info				info;
 
+//	ft_putstr("realloc\n");
 	if (g_mapping == NULL)
 		return (malloc(size));
 	if (ptr == NULL)

@@ -21,12 +21,6 @@ int 		find_in_large(t_info *info)
 	if (g_mapping->large == NULL)
 		return (0);
 	tmp = g_mapping->large;
-	if (tmp->zone_adr == info->ptr)
-	{
-		info->large = tmp;
-		return (1);
-	}
-	tmp = tmp->next;
 	while (tmp != NULL && tmp->zone_adr != info->ptr)
 		tmp = tmp->next;
 	if (tmp == NULL)
@@ -35,10 +29,11 @@ int 		find_in_large(t_info *info)
 	return (1);
 }
 
-//todo : il faut que le ptr de retour soit egale a 0x0;
+
 void			free(void *ptr)
 {
 	t_info		info;
+
 	if (g_mapping == NULL)
 		return ;
 	ft_bzero((void*)&info, sizeof(t_info));
@@ -46,6 +41,5 @@ void			free(void *ptr)
 	if (find_in_tiny(&info) == 1 || find_in_small(&info) == 1
 		|| find_in_large(&info) == 1)
 		delete_ptr(&info);
-//	ptr = NULL;
 	return;
 }

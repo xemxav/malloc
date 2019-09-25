@@ -13,6 +13,27 @@
 
 #include "../includes/malloc.h"
 
+static void			delete_tab(t_info *info)
+{
+	int				**tab;
+	int				tab_size;
+
+	tab = NULL;
+	if (info->small != NULL)
+	{
+		tab_size = SMALL_TAB_SIZE;
+		tab = info->small->tab;
+	}
+	else
+	{
+		tab_size = TINY_TAB_SIZE;
+		tab = info->tiny->tab;
+	}
+	munmap(tab[0], tab_size);
+	munmap(tab[1], tab_size);
+	munmap(tab, sizeof(int**));
+}
+
 void			delete_large_zone(t_info *info)
 {
 	t_large		*tmp;
@@ -21,18 +42,21 @@ void			delete_large_zone(t_info *info)
 		g_mapping->large = NULL;
 	else
 	{
-		tmp = g_mapping->large;
-		while (tmp->next != NULL && tmp->next != info->large)
-		tmp = tmp->next;
-		if (info->large->next == NULL)
-			tmp->next = NULL;
+		if (info->large == g_mapping->large && info->large->next != NULL)
+			g_mapping->large = info->large->next;
 		else
-		tmp->next = info->large->next;
+		{
+			tmp = g_mapping->large;
+			while (tmp->next != NULL && tmp->next != info->large)
+				tmp = tmp->next;
+			if (info->large->next == NULL)
+				tmp->next = NULL;
+			else
+				tmp->next = info->large->next;
+		}
 	}
-	if (munmap(info->large->zone_adr, info->large->size) == -1)
-		printf("fail de munmap de la large allouée");
-	if (munmap(info->large, sizeof(t_large)) == -1)
-		printf("fail de munmap de la structure large");
+	munmap(info->large->zone_adr, info->large->size);
+	munmap(info->large, sizeof(t_large));
 }
 
 void			delete_tiny_zone(t_info	*info)
@@ -42,19 +66,22 @@ void			delete_tiny_zone(t_info	*info)
 
 	before = NULL;
 	tiny = info->tiny;
-	info->tiny = NULL;
 	if (tiny->nb_alloc != 0)
 		return ;
 	if (g_mapping->tiny == tiny && tiny->next == NULL)
 		return ;
-	before = g_mapping->tiny;
-	while (before->next != NULL && before->next != tiny)
-		before = before->next;
-	before->next = tiny->next;
-	if (munmap(tiny->zone_adr, TINY_TAB_SIZE) == -1)
-		ft_putstr("fail de munmap de la tiny allouée\n");
-	if (munmap(tiny, sizeof(t_tiny)) == -1)
-		ft_putstr("fail de munmap de la structure tiny\n");
+	if (g_mapping->tiny == tiny && tiny->next != NULL)
+		g_mapping->tiny = tiny->next;
+	else
+	{
+		before = g_mapping->tiny;
+		while (before->next != NULL && before->next != tiny)
+			before = before->next;
+		before->next = tiny->next;
+	}
+	delete_tab(info);
+	munmap(tiny->zone_adr, TINY_PAGE_SIZE);
+	munmap(tiny, sizeof(t_tiny));
 }
 
 void			delete_small_zone(t_info *info)
@@ -64,19 +91,23 @@ void			delete_small_zone(t_info *info)
 
 	before = NULL;
 	small = info->small;
-	info->small = NULL;
 	if (small->nb_alloc != 0)
 		return ;
 	if (g_mapping->small == small && small->next == NULL)
 		return ;
-	before = g_mapping->small;
-	while (before->next != NULL && before->next != small)
-		before = before->next;
-	before->next = small->next;
-	if (munmap(small->zone_adr, SMALL_TAB_SIZE) == -1)
-		ft_putstr("fail de munmap de la small allouée\n");
-	if (munmap(small, sizeof(t_small)) == -1)
-		ft_putstr("fail de munmap de la structure small\n");
+	if (small == g_mapping->small && small->next != NULL)
+		g_mapping->small = small->next;
+	else
+	{
+		before = g_mapping->small;
+		while (before->next != NULL && before->next != small)
+			before = before->next;
+		before->next = small->next;
+	}
+
+	delete_tab(info);
+	munmap(small->zone_adr, SMALL_PAGE_SIZE);
+	munmap(small, sizeof(t_small));
 }
 
 void			delete_ptr(t_info	*info)

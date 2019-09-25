@@ -33,7 +33,7 @@ int					**init_tab(int tab_size)
 {
 	int				**tab;
 
-	tab = (int**)mmap(0, 2, PROT_READ |
+	tab = (int**)mmap(0, sizeof(int**), PROT_READ |
 	PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
 	if (tab == NULL)
 		return (NULL);
@@ -56,6 +56,8 @@ t_large				*init_large(size_t size)
 	large = NULL;
 	large = (t_large*)mmap(0, sizeof(t_large),
 			PROT_READ | PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
+//	large = (t_large*)mmap(0, getpagesize(),
+//			PROT_READ | PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
 	if (large == MAP_FAILED)
 		return (NULL);
 	ft_bzero((void*)large, sizeof(t_large));
@@ -83,6 +85,8 @@ t_small				*init_small(void)
 	small = NULL;
 	small = (t_small*)mmap(0, sizeof(t_small),
 			PROT_READ | PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
+//	small = (t_small*)mmap(0, getpagesize(),
+//						   PROT_READ | PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
 	if (small == MAP_FAILED)
 		return (NULL);
 	ft_bzero((void*)small, sizeof(t_small));
@@ -112,6 +116,8 @@ t_tiny				*init_tiny(void)
 	tiny = NULL;
 	tiny = (t_tiny*)mmap(0, sizeof(t_tiny),
 			PROT_READ | PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
+//	tiny = (t_tiny*)mmap(0, getpagesize(),
+//						 PROT_READ | PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
 	if (tiny == MAP_FAILED)
 		return (NULL);
 	ft_bzero((void*)tiny, sizeof(t_tiny));

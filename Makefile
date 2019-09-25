@@ -7,7 +7,8 @@ ifeq ($(HOSTTYPE),)
     		HOSTTYPE := $(shell uname -m)_$(shell uname -s)
 endif
 
-NAME = libmalloc_$(HOSTTYPE).so
+NAME = libft_malloc_$(HOSTTYPE).so
+SYM_LINK = libft_malloc.so
 PATH_OBJ = ./obj/
 PATH_SRC = ./src/
 PATH_INC = ./includes/
@@ -46,6 +47,7 @@ clean:
 fclean: clean
 	@printf "\n\033[1mSUPPRESSION DE $(NAME)\033[0m\n"
 	@rm -rf $(NAME)
+	@rm -rf $(SYM_LINK)
 	@rm -rf $(PATH_OBJ)
 	@make clean -C $(PATH_LIB)
 
@@ -55,13 +57,21 @@ re: fclean all
 #                                  Compilation                                 #
 #******************************************************************************#
 
+test: re $(NAME)
+	$(CC) $(CFLAGS) libft_malloc.so test.c -o my_test.out
+	./run.sh ./my_test.out
+
+
 $(NAME): $(PATH_OBJ) $(OBJ)
+	@echo "creation of lib"
 	@make -C $(PATH_LIB)
 	@$(CC) $(CFLAGS) $(OBJ) -I $(PATH_INC) $(INC_LIB) -shared -o $(NAME)
 	@echo "$(NAME) has been compiled"
+	@ln -sf $(NAME) $(SYM_LINK)
+	@echo "Symbolic link created"
 
 $(PATH_OBJ)%.o: $(PATH_SRC)%.c $(HEADERS)
-	@$(CC) $(CFLAGS) -I $(PATH_INC) -I $(PATH_INC_LIB) -c $< -o $@
+	@$(CC) $(CFLAGS) -fPIC -I $(PATH_INC) -I $(PATH_INC_LIB) -c $< -o $@
 
 $(PATH_OBJ):
 	@mkdir -p $(PATH_OBJ)

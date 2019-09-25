@@ -16,9 +16,7 @@
 int				find_in_tiny(t_info *info)
 {
 	t_tiny			*tmp;
-	int				i;
 
-	i = 0;
 	if (g_mapping->tiny == NULL)
 		return (0);
 	tmp = g_mapping->tiny;
