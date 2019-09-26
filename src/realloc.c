@@ -16,18 +16,16 @@
 static void				*create_new_ptr(t_info *info, size_t size)
 {
 	void				*new_ptr;
-	size_t 				size_copy;
 
-	size_copy = (int)size;
 	if ((new_ptr = malloc(size)) == NULL)
 		return (NULL);
-	if (info->tiny != NULL && (int)size_copy > info->tiny->tab[1][info->index])
-		size_copy = info->tiny->tab[1][info->index];
-	if (info->small != NULL && (int)size_copy > info->small->tab[1][info->index])
-		size_copy = info->small->tab[1][info->index];
-	if (info->large != NULL && size_copy > info->large->size)
-		size_copy = info->large->size;
-	ft_memcpy(new_ptr, info->ptr, size_copy);
+	if (info->tiny != NULL && (int)size > info->tiny->tab[1][info->index])
+		size = (size_t)(info->tiny->tab[1][info->index]);
+	if (info->small != NULL && (int)size > info->small->tab[1][info->index])
+		size = (size_t)(info->small->tab[1][info->index]);
+	if (info->large != NULL && size > info->large->size)
+		size = info->large->size;
+	ft_memcpy(new_ptr, info->ptr, size);
 	delete_ptr(info);
 	return (new_ptr);
 }
@@ -39,14 +37,14 @@ static void				*reallocate_tiny_small(t_info *info, size_t size)
 		if ((int)size < info->tiny->tab[1][info->index])
 			ft_bzero(info->ptr + size, TINY - info->tiny->tab[1][info->index]);
 		g_mapping->nb_allocated += size - info->tiny->tab[1][info->index];
-		info->tiny->tab[1][info->index] =  (int)size;
+		info->tiny->tab[1][info->index] = (int)size;
 	}
 	if (info->small != NULL)
 	{
 		if ((int)size < info->small->tab[1][info->index])
 			ft_bzero(info->ptr + size, SMALL - info->small->tab[1][info->index]);
 		g_mapping->nb_allocated += size - info->small->tab[1][info->index];
-		info->small->tab[1][info->index] =  (int)size;
+		info->small->tab[1][info->index] = (int)size;
 	}
 	return (info->ptr);
 }
@@ -55,7 +53,6 @@ void    				*realloc(void *ptr, size_t size)
 {
 	t_info				info;
 
-//	ft_putstr("realloc\n");
 	if (g_mapping == NULL)
 		return (malloc(size));
 	if (ptr == NULL)

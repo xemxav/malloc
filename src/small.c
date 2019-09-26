@@ -28,6 +28,12 @@ int				find_in_small(t_info *info)
 			info->index = (int)(((unsigned long)info->ptr -
 					(unsigned long)tmp->zone_adr) / (unsigned long)SMALL);
 			info->small = tmp;
+//			ft_putstr("trouve dans find_in_small : ");
+//			print_adress(info->ptr);
+//			ft_putchar('\n');
+//			ft_putstr("nb alloc = ");
+//			ft_putnbr(tmp->nb_alloc);
+//			ft_putchar('\n');
 			return (1);
 		}
 		tmp = tmp->next;
@@ -42,6 +48,8 @@ void			*get_small_ptr(t_small *small, size_t size)
 
 	i = 0;
 	new_ptr = NULL;
+	if (small == NULL)
+		return (NULL);
 	while (i < SMALL_TAB_SIZE)
 	{
 		if (small->tab[0][i] == 0)

@@ -18,7 +18,6 @@ void			*malloc(size_t size)
 	t_large		*new_large;
 
 	new_large = NULL;
-//	ft_putstr("malloc\n");
 	if (size <= TINY)
 		return (get_tiny_zone(size));
 	if (size <= SMALL)

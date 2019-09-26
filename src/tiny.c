@@ -42,6 +42,8 @@ void			*get_tiny_ptr(t_tiny *tiny, size_t size)
 
 	i = 0;
 	new_ptr = NULL;
+	if (tiny == NULL)
+		return (NULL);
 	while (i < TINY_TAB_SIZE)
 	{
 		if (tiny->tab[0][i] == 0)

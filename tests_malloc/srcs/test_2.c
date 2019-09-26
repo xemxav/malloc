@@ -16,6 +16,7 @@ int		test_2(backtrace bt)
 		bt_push(bt, "malloc");
 		data[i] = malloc(i);
 		bt_pop(bt);
+
 		TEST_NULL(data[i]);
 
 #ifdef CHECK_ALIGN
@@ -29,6 +30,7 @@ int		test_2(backtrace bt)
 		memset(data[i], 'a', i);
 		bt_pop(bt);
 	}
+
 	for (size_t i = 1; i < MAX_ALLOC; i += INCR) {
 		char	cmp[i];
 		char	zzzz[i+1];
