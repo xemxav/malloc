@@ -67,7 +67,7 @@ void    				*realloc(void *ptr, size_t size)
 	}
 	if (find_in_small(&info) == 1)
 	{
-		if((int)size <= SMALL)
+		if((int)size <= SMALL && (int)size > TINY)
 			return (reallocate_tiny_small(&info, size));
 		return (create_new_ptr(&info, size));
 	}
