@@ -20,7 +20,7 @@ void			*malloc(size_t size)
 	new_large = NULL;
 	if (size <= TINY)
 		return (get_tiny_zone(size));
-	if (size <= SMALL)
+	if (size <= SMALL && size > TINY)
 		return (get_small_zone(size));
 	if (size >= LARGE)
 	{

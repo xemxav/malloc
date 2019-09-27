@@ -22,7 +22,7 @@ int				find_in_small(t_info *info)
 	tmp = g_mapping->small;
 	while (tmp != NULL)
 	{
-		if (info->ptr <= tmp->zone_adr + SMALL_PAGE_SIZE &&
+		if (info->ptr <= tmp->zone_adr + (SMALL_PAGE_SIZE - 1) &&
 			info->ptr >= tmp->zone_adr)
 		{
 			info->index = (int)(((unsigned long)info->ptr -

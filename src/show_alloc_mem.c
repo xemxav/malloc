@@ -51,7 +51,9 @@ static void				show_small(void)
 	{
 		i = 0;
 		print_start("SMALL : ", (void*)small->zone_adr);
-		while (i < TINY_TAB_SIZE)
+		ft_putnbr(small->nb_alloc);
+		ft_putchar('\n');
+		while (i < SMALL_TAB_SIZE)
 		{
 			if (small->tab[0][i] == 1)
 			{
@@ -79,6 +81,8 @@ static void				show_tiny(void)
 	while (tiny != NULL)
 	{
 		print_start("TINY : ", (void*)tiny->zone_adr);
+		ft_putnbr(tiny->nb_alloc);
+		ft_putchar('\n');
 		i = 0;
 		while (i < TINY_TAB_SIZE)
 		{
