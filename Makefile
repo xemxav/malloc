@@ -57,7 +57,7 @@ re: fclean all
 #                                  Compilation                                 #
 #******************************************************************************#
 
-test: re $(NAME)
+test: $(NAME)
 	$(CC) $(CFLAGS) libft_malloc.so test.c -o my_test.out
 	./run.sh ./my_test.out
 

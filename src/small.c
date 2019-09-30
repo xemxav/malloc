@@ -25,16 +25,20 @@ int				find_in_small(t_info *info)
 		if (info->ptr <= tmp->zone_adr + (SMALL_PAGE_SIZE - 1) &&
 			info->ptr >= tmp->zone_adr)
 		{
-			info->index = (int)(((unsigned long)info->ptr -
-					(unsigned long)tmp->zone_adr) / (unsigned long)SMALL);
-			info->small = tmp;
-//			ft_putstr("trouve dans find_in_small : ");
-//			print_adress(info->ptr);
-//			ft_putchar('\n');
-//			ft_putstr("nb alloc = ");
-//			ft_putnbr(tmp->nb_alloc);
-//			ft_putchar('\n');
-			return (1);
+			if ((unsigned long)info->ptr % (unsigned long)TINY == 0)
+			{
+				info->index = (int)(((unsigned long)info->ptr -
+									 (unsigned long)tmp->zone_adr) /
+									 		(unsigned long)SMALL);
+				info->small = tmp;
+	//			ft_putstr("trouve dans find_in_small : ");
+	//			print_adress(info->ptr);
+	//			ft_putchar('\n');
+	//			ft_putstr("nb alloc = ");
+	//			ft_putnbr(tmp->nb_alloc);
+	//			ft_putchar('\n');
+				return (1);
+			}
 		}
 		tmp = tmp->next;
 	}

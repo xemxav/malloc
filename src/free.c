@@ -34,12 +34,11 @@ void			free(void *ptr)
 {
 	t_info		info;
 
-	if (g_mapping == NULL)
+	if (g_mapping == NULL || ptr == NULL)
 		return ;
 	ft_bzero((void*)&info, sizeof(t_info));
 	info.ptr = ptr;
 	if (find_in_tiny(&info) == 1 || find_in_small(&info) == 1
 		|| find_in_large(&info) == 1)
-		delete_ptr(&info);
 	return;
 }

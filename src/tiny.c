@@ -25,10 +25,14 @@ int				find_in_tiny(t_info *info)
 		if (info->ptr <= (void*)tmp->zone_adr + (TINY_PAGE_SIZE - 1) &&
 			info->ptr >= (void*)tmp->zone_adr)
 		{
-			info->index = (int)(((unsigned long)info->ptr -
-					(unsigned long)tmp->zone_adr) / (unsigned long)TINY);
-			info->tiny = tmp;
-			return (1);
+			if ((unsigned long)info->ptr % (unsigned long)TINY == 0)
+			{
+				info->index = (int)(((unsigned long)info->ptr -
+									 (unsigned long)tmp->zone_adr)
+									 		/ (unsigned long)TINY);
+				info->tiny = tmp;
+				return (1);
+			}
 		}
 		tmp = tmp->next;
 	}
