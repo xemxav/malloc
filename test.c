@@ -3,9 +3,9 @@
 //
 
 
-//#include "includes/malloc.h"
+#include "includes/malloc.h"
 #include "string.h"
-#include <stdlib.h>
+//#include <stdlib.h>
 #include "../libft/libft.h"
 
 # define MAX_ALLOC		5000
@@ -24,7 +24,7 @@ void printage(size_t i, void *a)
 	ft_putnbr(i);
 	ft_putchar('\n');
 	ft_putstr("adresse du segment : ");
-//	print_adress(a);
+	print_adress(a);
 	ft_putchar('\n');
 }
 
@@ -525,16 +525,17 @@ int test_12()
 }
 
 int main() {
-//	test_1();
-//	print("test 1 ok\n");
-//	test_2();
-//	print("test 2 ok\n");
-//	test_3();
-//	print("test 3 ok\n");
-//	test_4();
-//	print("test 4 ok\n");
-//	test_5();
-//	print("test 5 ok\n");
+	test_1();
+	print("test 1 ok\n");
+//	show_alloc_mem();
+	test_2();
+	print("test 2 ok\n");
+	test_3();
+	print("test 3 ok\n");
+	test_4();
+	print("test 4 ok\n");
+	test_5();
+	print("test 5 ok\n");
 	test_6();
 	print("test 6 ok\n");
 //	test_7();
