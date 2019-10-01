@@ -36,14 +36,14 @@ static void				*reallocate_tiny_small(t_info *info, size_t size)
 	{
 		if ((int)size < info->tiny->tab[1][info->index])
 			ft_bzero(info->ptr + size, TINY - info->tiny->tab[1][info->index]);
-		g_mapping->nb_allocated += size - info->tiny->tab[1][info->index];
+		g_mapping.nb_allocated += size - info->tiny->tab[1][info->index];
 		info->tiny->tab[1][info->index] = (int)size;
 	}
 	if (info->small != NULL)
 	{
 		if ((int)size < info->small->tab[1][info->index])
 			ft_bzero(info->ptr + size, SMALL - info->small->tab[1][info->index]);
-		g_mapping->nb_allocated += size - info->small->tab[1][info->index];
+		g_mapping.nb_allocated += size - info->small->tab[1][info->index];
 		info->small->tab[1][info->index] = (int)size;
 	}
 	return (info->ptr);
@@ -53,7 +53,8 @@ void    				*realloc(void *ptr, size_t size)
 {
 	t_info				info;
 
-	if (g_mapping == NULL)
+	if (g_mapping.tiny != NULL && g_mapping.small != NULL &&
+	g_mapping.large != NULL)
 		return (malloc(size));
 	if (ptr == NULL)
 		return malloc(size);

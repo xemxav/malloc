@@ -24,11 +24,9 @@ void			*malloc(size_t size)
 		return (get_small_zone(size));
 	if (size >= LARGE)
 	{
-		if (g_mapping == NULL)
-			init_mapping();
 		new_large = init_large(size);
 		new_large->size = size;
-		g_mapping->nb_allocated += (unsigned long long)size;
+		g_mapping.nb_allocated += (unsigned long long)size;
 		return (new_large->zone_adr);
 	}
 	return (NULL);

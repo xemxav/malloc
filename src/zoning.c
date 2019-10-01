@@ -13,23 +13,7 @@
 
 #include "../includes/malloc.h"
 
-t_mapping			*g_mapping = NULL;
-
-t_mapping			*init_mapping(void)
-{
-	t_mapping		*new_map;
-
-	new_map = NULL;
-//	new_map = (t_mapping*)mmap(0, sizeof(t_mapping),
-//			PROT_READ | PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
-	new_map = (t_mapping*)mmap(0, getpagesize(),
-							   PROT_READ | PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
-	if (new_map == MAP_FAILED)
-		return (NULL);
-	ft_bzero((void*)new_map, sizeof(t_mapping));
-	g_mapping = new_map;
-	return (new_map);
-}
+t_mapping			g_mapping = {NULL, NULL, NULL, 0};
 
 //int					**init_tab(int tab_size)
 //{
@@ -63,11 +47,11 @@ t_large				*init_large(size_t size)
 	if (large == MAP_FAILED)
 		return (NULL);
 	ft_bzero((void*)large, sizeof(t_large));
-	if (g_mapping->large == NULL)
-		g_mapping->large = large;
+	if (g_mapping.large == NULL)
+		g_mapping.large = large;
 	else
 	{
-		tmp = g_mapping->large;
+		tmp = g_mapping.large;
 		while (tmp->next != NULL)
 			tmp = tmp->next;
 		tmp->next = large;
@@ -92,11 +76,11 @@ t_small				*init_small(void)
 	if (small == MAP_FAILED)
 		return (NULL);
 	ft_bzero((void*)small, sizeof(t_small));
-	if (g_mapping->small == NULL)
-		g_mapping->small = small;
+	if (g_mapping.small == NULL)
+		g_mapping.small = small;
 	else
 	{
-		tmp = g_mapping->small;
+		tmp = g_mapping.small;
 		while (tmp->next != NULL)
 			tmp = tmp->next;
 		tmp->next = small;
@@ -123,11 +107,11 @@ t_tiny				*init_tiny(void)
 	if (tiny == MAP_FAILED)
 		return (NULL);
 	ft_bzero((void*)tiny, sizeof(t_tiny));
-	if (g_mapping->tiny == NULL)
-		g_mapping->tiny = tiny;
+	if (g_mapping.tiny == NULL)
+		g_mapping.tiny = tiny;
 	else
 	{
-		tmp = g_mapping->tiny;
+		tmp = g_mapping.tiny;
 		while (tmp->next != NULL)
 			tmp = tmp->next;
 		tmp->next = tiny;

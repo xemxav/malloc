@@ -38,15 +38,15 @@ void			delete_large_zone(t_info *info)
 {
 	t_large		*tmp;
 
-	if (info->large == g_mapping->large && info->large->next == NULL)
-		g_mapping->large = NULL;
+	if (info->large == g_mapping.large && info->large->next == NULL)
+		g_mapping.large = NULL;
 	else
 	{
-		if (info->large == g_mapping->large && info->large->next != NULL)
-			g_mapping->large = info->large->next;
+		if (info->large == g_mapping.large && info->large->next != NULL)
+			g_mapping.large = info->large->next;
 		else
 		{
-			tmp = g_mapping->large;
+			tmp = g_mapping.large;
 			while (tmp->next != NULL && tmp->next != info->large)
 				tmp = tmp->next;
 			if (info->large->next == NULL)
@@ -70,13 +70,13 @@ void			delete_tiny_zone(t_info	*info)
 	tiny = info->tiny;
 	if (tiny->nb_alloc != 0)
 		return ;
-	if (g_mapping->tiny == tiny && tiny->next == NULL)
+	if (g_mapping.tiny == tiny && tiny->next == NULL)
 		return ;
-	if (g_mapping->tiny == tiny && tiny->next != NULL)
-		g_mapping->tiny = tiny->next;
+	if (g_mapping.tiny == tiny && tiny->next != NULL)
+		g_mapping.tiny = tiny->next;
 	else
 	{
-		before = g_mapping->tiny;
+		before = g_mapping.tiny;
 		while (before->next != NULL && before->next != tiny)
 			before = before->next;
 		before->next = tiny->next;
@@ -95,35 +95,19 @@ void			delete_small_zone(t_info *info)
 
 	before = NULL;
 	small = info->small;
-//	ft_putstr("rentre delete_small : ");
-//	print_adress(info->ptr);
-//	ft_putchar('\n');
 	if (small->nb_alloc != 0)
 		return ;
-//	ft_putstr("passe test nb alloc\n");
-//	ft_putstr("a g_mapping->small : ");
-//	print_adress((void*)g_mapping->small);
-//	ft_putstr("\na small :");
-//	print_adress((void*)small);
-//	ft_putchar('\n');
-//	if (g_mapping->small == small)
-//		ft_putstr("g_mapping == small\n");
-//	if (small->next == NULL)
-//		ft_putstr("small->next == NULL\n");
-	if (g_mapping->small == small && small->next == NULL)
+	if (g_mapping.small == small && small->next == NULL)
 		return ;
-//	ft_putstr("passe test derniere\n");
-	if (small == g_mapping->small && small->next != NULL)
-		g_mapping->small = small->next;
+	if (small == g_mapping.small && small->next != NULL)
+		g_mapping.small = small->next;
 	else
 	{
-//		ft_putstr("passe dans else\n");
-		before = g_mapping->small;
+		before = g_mapping.small;
 		while (before->next != NULL && before->next != small)
 			before = before->next;
 		before->next = small->next;
 	}
-
 //	delete_tab(info);
 	munmap(small->zone_adr, SMALL_PAGE_SIZE);
 //	munmap(small, sizeof(t_small));
@@ -136,7 +120,7 @@ void			delete_ptr(t_info	*info)
 	if (info->tiny != NULL)
 	{
 		info->tiny->nb_alloc--;
-		g_mapping->nb_allocated -=
+		g_mapping.nb_allocated -=
 				(unsigned long long)info->tiny->tab[1][info->index];
 		ft_bzero(info->ptr, info->tiny->tab[1][info->index]);
 		info->tiny->tab[0][info->index] = 0;
@@ -146,19 +130,16 @@ void			delete_ptr(t_info	*info)
 	if (info->small != NULL)
 	{
 		info->small->nb_alloc--;
-		g_mapping->nb_allocated -=
+		g_mapping.nb_allocated -=
 				(unsigned long long)info->small->tab[1][info->index];
 		ft_bzero(info->ptr, info->small->tab[1][info->index]);
 		info->small->tab[0][info->index] = 0;
 		info->small->tab[1][info->index] = 0;
-//		ft_putstr("nb alloc dans delete_ptr : ");
-//		ft_putnbr(info->small->nb_alloc);
-//		ft_putchar('\n');
 		delete_small_zone(info);
 	}
 	if (info->large != NULL)
 	{
-		g_mapping->nb_allocated -= info->large->size;
+		g_mapping.nb_allocated -= info->large->size;
 		delete_large_zone(info);
 	}
 	info->ptr = NULL;

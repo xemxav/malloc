@@ -56,6 +56,12 @@ re: fclean all
 #******************************************************************************#
 #                                  Compilation                                 #
 #******************************************************************************#
+suptest:
+	rm test0 test1 test2 test3 test4 test5
+
+comptest: $(NAME)
+	./run.sh /usr/bin/time -l ./test0
+	./run.sh /usr/bin/time -l ./test1
 
 test5: $(NAME)
 	@$(CC) -L. -lft_malloc correc/test5.c -o test5
@@ -63,33 +69,33 @@ test5: $(NAME)
 
 test4: $(NAME)
 	@$(CC) correc/test4.c -o test4
-	/usr/bin/time -l ./test4
+#	/usr/bin/time -l ./test4
 	@echo "avec le mien:"
-	/usr/bin/time -l ./run.sh ./test4
+	./run.sh /usr/bin/time -l ./test4
 
 test3: $(NAME)
 	@$(CC) correc/test3.c -o test3
 	/usr/bin/time -l ./test3
 	@echo "avec le mien:"
-	/usr/bin/time -l ./run.sh ./test3
+	./run.sh /usr/bin/time -l ./test3
 
 test2: $(NAME)
 	@$(CC) correc/test2.c -o test2
 	/usr/bin/time -l ./test2
 	@echo "avec le mien:"
-	/usr/bin/time -l ./run.sh ./test2
+	./run.sh /usr/bin/time -l ./test2
 
 test1: $(NAME)
 	@$(CC) correc/test1.c -o test1
 	/usr/bin/time -l ./test1
 	@echo "avec le mien:"
-	/usr/bin/time -l ./run.sh ./test1
+	./run.sh /usr/bin/time -l ./test1
 
 test0: $(NAME)
 	@$(CC)  correc/test0.c -o test0
 	/usr/bin/time -l ./test0
 	@echo "avec le mien:"
-	/usr/bin/time -l ./run.sh ./test0
+	./run.sh /usr/bin/time -l ./test0
 
 test: $(NAME)
 	$(CC) $(CFLAGS) libft_malloc.so test.c -o my_test.out
