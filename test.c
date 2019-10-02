@@ -525,9 +525,20 @@ int test_12()
 }
 
 int main() {
+	int i;
+	char *ptr;
+
+	i = 0;
+	while (i < 128)
+	{
+		ptr = malloc(i);
+		i++;
+	}
+	ft_putstr("commence test\n");
 	test_1();
 	print("test 1 ok\n");
-	test_2();
+//	show_alloc_mem();
+//	test_2();
 	print("test 2 ok\n");
 	test_3();
 	print("test 3 ok\n");
@@ -549,5 +560,7 @@ int main() {
 	print("test 11 ok\n");
 	test_12();
 	print("test 12 ok\n");
+
+
 	return (0);
 }

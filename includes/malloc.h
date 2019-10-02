@@ -21,11 +21,13 @@
 
 //# include <stdio.h>
 
-# define TINY 1024
-# define SMALL 4096
+# define TINY 512
+# define SMALL 1024
 # define LARGE (SMALL + 1)
-# define TINY_PAGE_SIZE (32 * getpagesize())
-# define SMALL_PAGE_SIZE (200 * getpagesize())
+# define TINY_MULT (128 * TINY) / getpagesize()
+# define SMALL_MULT (128 * SMALL) / getpagesize()
+# define TINY_PAGE_SIZE (TINY_MULT * getpagesize())
+# define SMALL_PAGE_SIZE (SMALL_MULT * getpagesize())
 # define TINY_TAB_SIZE (TINY_PAGE_SIZE / TINY)
 # define SMALL_TAB_SIZE (SMALL_PAGE_SIZE  / SMALL)
 
@@ -41,7 +43,7 @@ typedef struct			s_tiny
 typedef struct			s_small
 {
 	void				*zone_adr;
-	int					tab[2][200];
+	int					tab[2][128];
 //	int 				**tab;
 	int					nb_alloc;
 	struct s_small		*next;

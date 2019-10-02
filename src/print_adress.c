@@ -38,7 +38,7 @@ void				print_adress(void *adrr)
 	ul_ad = (unsigned long)adrr;
 	ref = "0123456789abcdef\0";
 	len_adrr = basecount(ul_ad, 16) - 1;
-	ft_putstr("0x");
+	//ft_putstr("0x");
 	str[len_adrr + 1] = '\0';
 	while ((int)len_adrr >= 0)
 	{
@@ -46,5 +46,5 @@ void				print_adress(void *adrr)
 		ul_ad = ul_ad / 16;
 		len_adrr--;
 	}
-	ft_putstr(str);
+	//ft_putstr(str);
 }
