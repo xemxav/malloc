@@ -3,7 +3,7 @@
 //
 
 
-//#include "includes/malloc.h"
+#include "includes/malloc.h"
 #include "string.h"
 #include <stdlib.h>
 #include "../libft/libft.h"
@@ -24,7 +24,7 @@ void printage(size_t i, void *a)
 	ft_putnbr(i);
 	ft_putchar('\n');
 	ft_putstr("adresse du segment : ");
-//	print_adress(a);
+	print_adress(a);
 	ft_putchar('\n');
 }
 
@@ -525,29 +525,29 @@ int test_12()
 }
 
 int main() {
-//	test_1();
-//	print("test 1 ok\n");
-//	test_2();
-//	print("test 2 ok\n");
-//	test_3();
-//	print("test 3 ok\n");
-//	test_4();
-//	print("test 4 ok\n");
-//	test_5();
-//	print("test 5 ok\n");
-	test_6();
-	print("test 6 ok\n");
-//	test_7();
-//	print("test 7 ok\n");
-//	test_8();
-//	print("test 8 ok\n");
-//	test_9();
-//	print("test 9 ok\n");
-//	test_10();
-//	print("test 10 ok\n");
-//	test_11();
-//	print("test 11 ok\n");
-//	test_12();
-//	print("test 12 ok\n");
+	test_1();
+	print("test 1 ok\n");
+	test_2();
+	print("test 2 ok\n");
+	test_3();
+	print("test 3 ok\n");
+	test_4();
+	print("test 4 ok\n");
+	test_5();
+	print("test 5 ok\n");
+//	test_6();
+//	print("test 6 ok\n");
+	test_7();
+	print("test 7 ok\n");
+	test_8();
+	print("test 8 ok\n");
+	test_9();
+	print("test 9 ok\n");
+	test_10();
+	print("test 10 ok\n");
+	test_11();
+	print("test 11 ok\n");
+	test_12();
+	print("test 12 ok\n");
 	return (0);
 }
