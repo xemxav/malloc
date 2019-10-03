@@ -18,14 +18,14 @@ void			*malloc(size_t size)
 	t_large		*new_large;
 
 	new_large = NULL;
-	//ft_putstr("enter malloc\n");
+//	//ft_putstr("enter malloc\n");
 	if (size <= TINY)
 		return (get_tiny_zone(size));
 	if (size <= SMALL && size > TINY)
 		return (get_small_zone(size));
 	if (size >= LARGE)
 	{
-		//ft_putstr("malloc d'un LARGE\n");
+//		//ft_putstr("malloc d'un LARGE\n");
 		if (g_mapping == NULL)
 			init_mapping();
 		new_large = init_large(size);

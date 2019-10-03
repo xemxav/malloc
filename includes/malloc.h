@@ -24,17 +24,20 @@
 # define TINY 512
 # define SMALL 1024
 # define LARGE (SMALL + 1)
-# define TINY_MULT (128 * TINY) / getpagesize()
-# define SMALL_MULT (128 * SMALL) / getpagesize()
+# define TINY_TAB_SIZE 128
+# define SMALL_TAB_SIZE 128
+# define TINY_MULT (TINY_TAB_SIZE * TINY) / getpagesize()
+# define SMALL_MULT (SMALL_TAB_SIZE  * SMALL) / getpagesize()
 # define TINY_PAGE_SIZE (TINY_MULT * getpagesize())
 # define SMALL_PAGE_SIZE (SMALL_MULT * getpagesize())
-# define TINY_TAB_SIZE (TINY_PAGE_SIZE / TINY)
-# define SMALL_TAB_SIZE (SMALL_PAGE_SIZE  / SMALL)
+//# define TINY_TAB_SIZE (TINY_PAGE_SIZE / TINY)
+//# define SMALL_TAB_SIZE (SMALL_PAGE_SIZE  / SMALL)
+
 
 typedef struct			s_tiny
 {
 	void				*zone_adr;
-	int					tab[2][128];
+	int					tab[2][TINY_TAB_SIZE];
 //	int 				**tab;
 	int					nb_alloc;
 	struct s_tiny		*next;
@@ -43,7 +46,7 @@ typedef struct			s_tiny
 typedef struct			s_small
 {
 	void				*zone_adr;
-	int					tab[2][128];
+	int					tab[2][SMALL_TAB_SIZE];
 //	int 				**tab;
 	int					nb_alloc;
 	struct s_small		*next;

@@ -17,10 +17,10 @@ static void				*create_new_ptr(t_info *info, size_t size)
 {
 	void				*new_ptr;
 
-	//ft_putstr("rentre dans create_new_ptr\n");
+//	//ft_putstr("rentre dans create_new_ptr\n");
 	if ((new_ptr = malloc(size)) == NULL)
 		return (NULL);
-	//ft_putstr("create_new_ptr : passe nvx malloc\n");
+//	//ft_putstr("create_new_ptr : passe nvx malloc\n");
 	if (info->tiny != NULL && (int)size > info->tiny->tab[1][info->index])
 		size = (size_t)(info->tiny->tab[1][info->index]);
 	if (info->small != NULL && (int)size > info->small->tab[1][info->index])
@@ -28,7 +28,7 @@ static void				*create_new_ptr(t_info *info, size_t size)
 	if (info->large != NULL && size > info->large->size)
 		size = info->large->size;
 	ft_memcpy(new_ptr, info->ptr, size);
-	//ft_putstr("create_new_ptr : passe memcpy\n");
+//	//ft_putstr("create_new_ptr : passe memcpy\n");
 	delete_ptr(info);
 	//ft_putstr("create_new_ptr : passe delete_ptr\n");
 	return (new_ptr);

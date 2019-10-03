@@ -79,7 +79,11 @@ test4: $(NAME)
 	@echo "avec le mien:"
 	./run.sh /usr/bin/time -l ./test4
 
-
+test3bis: $(NAME)
+	@$(CC) correc/test3bis.c -o test3bis
+	/usr/bin/time -l ./test3bis
+	@echo "avec le mien:"
+	./run.sh /usr/bin/time -l ./test3bis
 
 test3: $(NAME)
 	@$(CC) correc/test3.c -o test3
@@ -117,6 +121,7 @@ $(NAME): $(PATH_OBJ) $(OBJ)
 	@echo "$(NAME) has been compiled"
 	@ln -sf $(NAME) $(SYM_LINK)
 	@echo "Symbolic link created"
+	cp $(NAME) test_malloc
 
 $(PATH_OBJ)%.o: $(PATH_SRC)%.c $(HEADERS)
 	@$(CC) $(CFLAGS) -fPIC -I $(PATH_INC) -I $(PATH_INC_LIB) -c $< -o $@
