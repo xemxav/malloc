@@ -15,11 +15,8 @@
 # define MALLOC_H
 
 # include "../libft/libft.h"
-//# include <unistd.h>
 # include <sys/mman.h>
 # include <sys/resource.h>
-
-//# include <stdio.h>
 
 # define TINY 512
 # define SMALL 1024
@@ -30,15 +27,11 @@
 # define SMALL_MULT (SMALL_TAB_SIZE  * SMALL) / getpagesize()
 # define TINY_PAGE_SIZE (TINY_MULT * getpagesize())
 # define SMALL_PAGE_SIZE (SMALL_MULT * getpagesize())
-//# define TINY_TAB_SIZE (TINY_PAGE_SIZE / TINY)
-//# define SMALL_TAB_SIZE (SMALL_PAGE_SIZE  / SMALL)
-
 
 typedef struct			s_tiny
 {
 	void				*zone_adr;
 	int					tab[2][TINY_TAB_SIZE];
-//	int 				**tab;
 	int					nb_alloc;
 	struct s_tiny		*next;
 }						t_tiny;
@@ -47,7 +40,6 @@ typedef struct			s_small
 {
 	void				*zone_adr;
 	int					tab[2][SMALL_TAB_SIZE];
-//	int 				**tab;
 	int					nb_alloc;
 	struct s_small		*next;
 }						t_small;
@@ -75,7 +67,7 @@ typedef struct			s_info
 	struct s_small		*small;
 	struct s_large		*large;
 	void				*ptr;
-	int 				index;
+	int					index;
 }						t_info;
 
 /*
@@ -98,7 +90,7 @@ int						find_in_small(t_info *info);
 /*
 **		REALLOC.C
 */
-void    				*realloc(void *ptr, size_t size);
+void					*realloc(void *ptr, size_t size);
 /*
 ** 		ZONING.C
 */
@@ -122,7 +114,7 @@ void					show_alloc_mem_ex(void *zone, size_t size);
 **		FREE.C
 */
 void					free(void *ptr);
-int 					find_in_large(t_info *info);
+int						find_in_large(t_info *info);
 /*
 **		DELETING.C
 */

@@ -45,14 +45,11 @@ static void				show_small(void)
 	t_small				*small;
 	int					i;
 
-
 	small = g_mapping->small;
 	while (small != NULL)
 	{
 		i = 0;
 		print_start("SMALL : ", (void*)small->zone_adr);
-		ft_putnbr(small->nb_alloc);
-		ft_putchar('\n');
 		while (i < SMALL_TAB_SIZE)
 		{
 			if (small->tab[0][i] == 1)
@@ -76,13 +73,10 @@ static void				show_tiny(void)
 	t_tiny				*tiny;
 	int					i;
 
-
 	tiny = g_mapping->tiny;
 	while (tiny != NULL)
 	{
 		print_start("TINY : ", (void*)tiny->zone_adr);
-		ft_putnbr(tiny->nb_alloc);
-		ft_putchar('\n');
 		i = 0;
 		while (i < TINY_TAB_SIZE)
 		{

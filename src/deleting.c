@@ -17,7 +17,6 @@ void			delete_large_zone(t_info *info)
 {
 	t_large		*tmp;
 
-	//ft_putstr("rentre delete_large_zone\n");
 	if (info->large == g_mapping->large && info->large->next == NULL)
 		g_mapping->large = NULL;
 	else
@@ -37,15 +36,13 @@ void			delete_large_zone(t_info *info)
 	}
 	munmap(info->large->zone_adr, info->large->size);
 	munmap(info->large, getpagesize());
-	//ft_putstr("quitte delete_large_zone\n");
 }
 
-void			delete_tiny_zone(t_info	*info)
+void			delete_tiny_zone(t_info *info)
 {
 	t_tiny		*before;
 	t_tiny		*tiny;
 
-	//ft_putstr("rentre delete_tiny_zone\n");
 	before = NULL;
 	tiny = info->tiny;
 	if (tiny->nb_alloc != 0)
@@ -63,14 +60,12 @@ void			delete_tiny_zone(t_info	*info)
 	}
 	munmap(tiny->zone_adr, TINY_PAGE_SIZE);
 	munmap(tiny, getpagesize());
-	//ft_putstr("quitte delete_tiny_zone\n");
 }
 
 void			delete_small_zone(t_info *info)
 {
 	t_small		*before;
 	t_small		*small;
-	//ft_putstr("rentre delete_small_zone\n");
 
 	before = NULL;
 	small = info->small;
@@ -89,15 +84,12 @@ void			delete_small_zone(t_info *info)
 	}
 	munmap(small->zone_adr, SMALL_PAGE_SIZE);
 	munmap(small, getpagesize());
-	//ft_putstr("quitte delete_small_zone\n");
 }
 
-void			delete_ptr(t_info	*info)
+void			delete_ptr(t_info *info)
 {
-	//ft_putstr("rentre dans delete_ptr\n");
 	if (info->tiny != NULL)
 	{
-		//ft_putstr("rentre dans delete_ptr tiny\n");
 		info->tiny->nb_alloc--;
 		g_mapping->nb_allocated -=
 				(unsigned long long)info->tiny->tab[1][info->index];
@@ -108,7 +100,6 @@ void			delete_ptr(t_info	*info)
 	}
 	if (info->small != NULL)
 	{
-		//ft_putstr("rentre dans delete_ptr small\n");
 		info->small->nb_alloc--;
 		g_mapping->nb_allocated -=
 				(unsigned long long)info->small->tab[1][info->index];
@@ -122,5 +113,4 @@ void			delete_ptr(t_info	*info)
 		g_mapping->nb_allocated -= info->large->size;
 		delete_large_zone(info);
 	}
-	//ft_putstr("delete_ptr fini\n");
 }
