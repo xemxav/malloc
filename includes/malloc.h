@@ -18,8 +18,8 @@
 # include <sys/mman.h>
 # include <sys/resource.h>
 
-# define TINY 512
-# define SMALL 1024
+# define TINY 1024
+# define SMALL 4096
 # define LARGE (SMALL + 1)
 # define TINY_TAB_SIZE 128
 # define SMALL_TAB_SIZE 128
@@ -57,6 +57,8 @@ typedef struct			s_mapping
 	struct s_small		*small;
 	struct s_large		*large;
 	unsigned long long	nb_allocated;
+	int					tiny_zsize;
+	int 				small_zsize;
 }						t_mapping;
 
 extern t_mapping		*g_mapping;

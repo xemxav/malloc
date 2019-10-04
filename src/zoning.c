@@ -15,6 +15,16 @@
 
 t_mapping			*g_mapping = NULL;
 
+static size_t		get_large_zsize(size_t size)
+{
+	size_t			m;
+
+	m = 0;
+	while (m * getpagesize() <= size)
+		m++;
+	return (m * getpagesize());
+}
+
 t_mapping			*init_mapping(void)
 {
 	t_mapping		*new_map;
@@ -49,7 +59,7 @@ t_large				*init_large(size_t size)
 			tmp = tmp->next;
 		tmp->next = large;
 	}
-	large->zone_adr = (void*)mmap(0, size, PROT_READ
+	large->zone_adr = (void*)mmap(0, get_large_zsize(size), PROT_READ
 	| PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
 	if (large->zone_adr == MAP_FAILED)
 		return (NULL);
