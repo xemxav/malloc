@@ -13,6 +13,20 @@
 
 #include "../includes/malloc.h"
 
+void			*calloc(size_t nmemb, size_t size)
+{
+	void		*ptr;
+	size_t		i;
+
+	i = 0;
+	if (size == 0)
+		return (NULL);
+	if ((ptr = malloc(nmemb * size)) == NULL)
+		return (NULL);
+	ft_bzero(ptr, nmemb * size);
+	return (ptr);
+}
+
 void			*malloc(size_t size)
 {
 	t_large		*new_large;

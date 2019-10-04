@@ -76,6 +76,7 @@ typedef struct			s_info
 **		MALLOC.C
 */
 void					*malloc(size_t size);
+void					*calloc(size_t nmemb, size_t size);
 
 /*
 **		TINY.C
