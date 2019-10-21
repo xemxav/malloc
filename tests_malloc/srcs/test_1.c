@@ -9,6 +9,7 @@
 
 int		test_1(backtrace bt)
 {
+    write(1, "BJJ\n", 4);
 	bt_push(bt, __FUNCTION__);
 	for (size_t i = 1; i < MAX_ALLOC; i += INCR) {
 
@@ -34,5 +35,6 @@ int		test_1(backtrace bt)
 		bt_pop(bt);
 	}
 	bt_pop(bt);
+
 	return 0;
 }

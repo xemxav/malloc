@@ -15,6 +15,7 @@ int		test_2(backtrace bt)
 	for (size_t i = 1; i < MAX_ALLOC; i += INCR) {
 		bt_push(bt, "malloc");
 		data[i] = malloc(i);
+		write(1, "MALLOC\n", 7);
 		bt_pop(bt);
 
 		TEST_NULL(data[i]);
@@ -49,6 +50,7 @@ int		test_2(backtrace bt)
 		bt_pop(bt);
 
 		bt_push(bt, "free");
+		write(1, "FREE\n", 5);
 		free(data[i]);
 		bt_pop(bt);
 	}

@@ -58,7 +58,7 @@ typedef struct			s_mapping
 	struct s_large		*large;
 	unsigned long long	nb_allocated;
 	int					tiny_zsize;
-	int 				small_zsize;
+	int					small_zsize;
 }						t_mapping;
 
 extern t_mapping		*g_mapping;

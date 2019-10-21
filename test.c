@@ -538,7 +538,7 @@ int main() {
 	test_1();
 	print("test 1 ok\n");
 //	show_alloc_mem();
-//	test_2();
+	test_2();
 	print("test 2 ok\n");
 	test_3();
 	print("test 3 ok\n");
